@@ -1,0 +1,1246 @@
+/* =====================================================
+   RESET + VARIABLE
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #a8302f;
+    --primary-dark: #8f2424;
+    --primary-light: #fff0ef;
+
+    --secondary: #0a629e;
+
+    --background: #fff8f7;
+
+    --surface: #ffffff;
+    --surface-soft: #fff0ef;
+
+    --border: #dfbfbc;
+
+    --text: #251817;
+    --text-soft: #58413f;
+
+    --success: #087b54;
+    --success-bg: #e8f8f1;
+
+    --danger: #ba1a1a;
+    --danger-bg: #ffdad6;
+}
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body {
+    min-height: 100vh;
+    padding-bottom: 110px;
+
+    font-family: "Roboto", sans-serif;
+
+    background: var(--background);
+    color: var(--text);
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.top-header {
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    background: #fff8f7;
+
+    border-bottom: 1px solid var(--border);
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.03);
+}
+
+.header-container {
+    width: 100%;
+    max-width: 800px;
+
+    margin: auto;
+
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.header-container h1 {
+    color: var(--primary);
+
+    font-family: "Roboto Slab", serif;
+
+    font-size: 24px;
+
+    font-weight: 700;
+}
+
+.back-icon-btn {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    color: var(--text);
+
+    transition: 0.2s;
+}
+
+.back-icon-btn:hover {
+    background: var(--primary-light);
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main-container {
+    width: 100%;
+    max-width: 800px;
+
+    margin: auto;
+
+    padding: 32px 24px 50px;
+}
+
+
+/* =====================================================
+   STEPPER - ĐỒNG BỘ 2.HTML
+===================================================== */
+
+.stepper-section {
+    width: 100%;
+
+    margin-bottom: 40px;
+}
+
+.stepper-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+
+/* ĐƯỜNG GẠCH NGANG TOÀN BỘ */
+
+.stepper-background-line {
+    position: absolute;
+
+    top: 16px;
+
+    left: 16.666%;
+
+    width: 66.666%;
+
+    height: 2px;
+
+    background: var(--border);
+
+    z-index: 0;
+}
+
+
+/* PHẦN 1 -> 2 ĐÃ HOÀN THÀNH */
+
+.stepper-background-line::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: var(--secondary);
+}
+
+
+/* MỖI STEP */
+
+.step-box {
+    position: relative;
+
+    z-index: 2;
+
+    width: 33.333%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;
+
+    text-align: center;
+}
+
+
+/* VÒNG TRÒN STEP */
+
+.step-circle {
+    position: relative;
+
+    z-index: 3;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--background);
+
+    border: 2px solid var(--border);
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+/* COMPLETED */
+
+.completed-step {
+    color: var(--secondary);
+
+    border-color: var(--secondary);
+
+    background: var(--background);
+}
+
+.completed-step .step-check {
+    font-size: 18px;
+}
+
+
+/* ACTIVE */
+
+.active-step {
+    background: var(--primary);
+
+    border-color: var(--primary);
+
+    color: #ffffff;
+}
+
+
+/* LABEL */
+
+.step-label {
+    position: relative;
+
+    z-index: 3;
+
+    display: inline-block;
+
+    padding: 0 8px;
+
+    background: var(--background);
+
+    font-size: 12px;
+
+    color: #8c716e;
+}
+
+.completed-label {
+    color: var(--secondary);
+}
+
+.active-label {
+    color: var(--primary);
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+.page-title {
+    margin-bottom: 22px;
+}
+
+.page-title h2 {
+    margin-bottom: 7px;
+
+    font-family: "Roboto Slab", serif;
+
+    font-size: 30px;
+}
+
+.page-title p {
+    color: var(--text-soft);
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   STUDENT CARD
+===================================================== */
+
+.student-card {
+    margin-bottom: 20px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.04);
+}
+
+.student-card-header {
+    padding: 18px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #fff0ef,
+            #ffffff
+        );
+
+    border-bottom: 1px solid #f1dddd;
+}
+
+.student-header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+.student-main-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #d0e4ff;
+
+    color: var(--secondary);
+}
+
+.student-card-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--text-soft);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+}
+
+.student-header-left h3 {
+    font-family: "Roboto Slab", serif;
+
+    font-size: 18px;
+}
+
+.student-valid {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 7px 10px;
+
+    border-radius: 20px;
+
+    background: var(--success-bg);
+
+    color: var(--success);
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.student-valid .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.student-info-grid {
+    padding: 18px 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.student-info-box {
+    min-height: 68px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    border: 1px solid #f0dddd;
+
+    border-radius: 11px;
+
+    background: #fffdfd;
+
+    transition: 0.2s;
+}
+
+.student-info-box:hover {
+    border-color: #d8b4b1;
+
+    transform: translateY(-1px);
+}
+
+.info-box-icon {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+}
+
+.info-box-icon .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.student-info-box span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--text-soft);
+
+    font-size: 9px;
+}
+
+.student-info-box strong {
+    font-size: 12px;
+
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   PAYMENT GRID
+===================================================== */
+
+.payment-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(260px, 0.8fr);
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+.payment-card,
+.account-card,
+.terms-card {
+    padding: 20px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.04);
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
+.section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 17px;
+}
+
+.section-title .material-symbols-outlined {
+    color: var(--primary);
+}
+
+.section-title h3 {
+    font-family: "Roboto Slab", serif;
+
+    font-size: 17px;
+}
+
+
+/* =====================================================
+   PAYMENT ITEM
+===================================================== */
+
+.payment-item {
+    padding: 14px 0;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom: 1px solid #f1dddd;
+}
+
+.payment-item > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.payment-item strong {
+    font-size: 12px;
+}
+
+.payment-item span {
+    color: var(--text-soft);
+
+    font-size: 10px;
+}
+
+.item-price {
+    flex-shrink: 0;
+}
+
+.payment-total {
+    margin: 18px -20px -20px;
+
+    padding: 18px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-radius:
+        0 0 14px 14px;
+
+    background: var(--surface-soft);
+}
+
+.payment-total span {
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+.payment-total strong {
+    color: var(--primary);
+
+    font-family: "Roboto Slab", serif;
+
+    font-size: 19px;
+}
+
+
+/* =====================================================
+   ACCOUNT
+===================================================== */
+
+.account-box {
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+}
+
+.account-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+}
+
+.account-content span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--text-soft);
+
+    font-size: 10px;
+}
+
+.account-content strong {
+    font-size: 13px;
+}
+
+.available-balance {
+    margin-top: 13px;
+
+    padding: 11px 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-radius: 9px;
+
+    background: var(--surface-soft);
+}
+
+.available-balance span {
+    color: var(--text-soft);
+
+    font-size: 10px;
+}
+
+.available-balance strong {
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   BALANCE STATUS
+===================================================== */
+
+.balance-success,
+.balance-alert {
+    padding: 14px;
+
+    display: flex;
+
+    gap: 10px;
+
+    border-radius: 12px;
+}
+
+.balance-success {
+    background: var(--success-bg);
+
+    color: var(--success);
+}
+
+.balance-alert {
+    background: var(--danger-bg);
+
+    color: var(--danger);
+}
+
+.balance-success > span,
+.balance-alert > span {
+    flex-shrink: 0;
+}
+
+.balance-success strong,
+.balance-alert strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 12px;
+}
+
+.balance-success p,
+.balance-alert p {
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.balance-alert button {
+    margin-top: 8px;
+
+    padding: 7px 11px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: var(--danger);
+
+    color: #ffffff;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   TERMS
+===================================================== */
+
+.terms-title {
+    margin-bottom: 12px;
+}
+
+.agreement-row {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 10px 0;
+
+    cursor: pointer;
+}
+
+.agreement-row + .agreement-row {
+    border-top: 1px solid #f1dddd;
+}
+
+.agreement-row input {
+    width: 17px;
+    height: 17px;
+
+    margin-top: 1px;
+
+    flex-shrink: 0;
+
+    accent-color: var(--primary);
+}
+
+.agreement-row > span {
+    color: var(--text-soft);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.agreement-row strong {
+    color: var(--primary);
+}
+
+.terms-link {
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    color: var(--primary);
+
+    font-size: inherit;
+
+    font-weight: 700;
+
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   BOTTOM BAR
+===================================================== */
+
+.bottom-bar {
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+
+    z-index: 100;
+
+    width: 100%;
+
+    background: #ffffff;
+
+    border-top: 1px solid var(--border);
+
+    box-shadow:
+        0 -4px 16px
+        rgba(0, 0, 0, 0.05);
+}
+
+.bottom-container {
+    width: 100%;
+    max-width: 800px;
+
+    margin: auto;
+
+    padding: 15px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.bottom-total span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--text-soft);
+
+    font-size: 10px;
+}
+
+.bottom-total strong {
+    color: var(--primary);
+
+    font-family: "Roboto Slab", serif;
+
+    font-size: 18px;
+}
+
+.bottom-actions {
+    display: flex;
+
+    gap: 10px;
+}
+
+.back-btn,
+.confirm-btn {
+    height: 46px;
+
+    padding: 0 19px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.back-btn {
+    border: 1px solid var(--border);
+
+    background: #ffffff;
+
+    color: var(--text);
+}
+
+.confirm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    transition: 0.2s;
+}
+
+.confirm-btn:hover:not(:disabled) {
+    background: var(--primary-dark);
+}
+
+.confirm-btn:disabled {
+    background: #eadada;
+
+    color: #8c716e;
+
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 500;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(35, 20, 20, 0.48);
+}
+
+.otp-modal,
+.terms-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 390px;
+
+    padding: 27px;
+
+    border-radius: 17px;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 11px;
+    right: 11px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--surface-soft);
+}
+
+.modal-icon {
+    width: 56px;
+    height: 56px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+}
+
+.otp-modal h2,
+.terms-modal h2 {
+    margin-bottom: 9px;
+
+    font-family: "Roboto Slab", serif;
+
+    font-size: 20px;
+}
+
+.otp-modal > p {
+    color: var(--text-soft);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.otp-demo {
+    display: inline-block;
+
+    margin: 14px 0;
+
+    padding: 6px 10px;
+
+    border-radius: 7px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 10px;
+}
+
+#otpInput {
+    width: 100%;
+    height: 48px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    text-align: center;
+
+    letter-spacing: 6px;
+
+    font-size: 17px;
+}
+
+#otpInput:focus {
+    border-color: var(--primary);
+}
+
+.otp-confirm-btn,
+.agree-terms-btn {
+    width: 100%;
+    height: 44px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.terms-content {
+    max-height: 270px;
+
+    margin: 15px 0;
+
+    overflow-y: auto;
+
+    text-align: left;
+}
+
+.terms-content p {
+    margin-bottom: 10px;
+
+    color: var(--text-soft);
+
+    font-size: 11px;
+
+    line-height: 1.55;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 95px;
+
+    z-index: 700;
+
+    min-width: 240px;
+
+    padding: 12px 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border-radius: 9px;
+
+    background: #292323;
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(10px);
+
+    transition: 0.25s;
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.toast > span:first-child {
+    color: #67d795;
+}
+
+
+/* =====================================================
+   UTIL
+===================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 720px) {
+
+    body {
+        padding-bottom: 150px;
+    }
+
+    .main-container {
+        padding:
+            25px 16px 45px;
+    }
+
+    .header-container {
+        padding: 0 16px;
+    }
+
+    .step-label {
+        display: none;
+    }
+
+    .student-card-header {
+        align-items: flex-start;
+    }
+
+    .student-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-container {
+        padding: 12px 16px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .bottom-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .bottom-actions {
+        width: 100%;
+    }
+
+    .back-btn,
+    .confirm-btn {
+        flex: 1;
+    }
+
+}

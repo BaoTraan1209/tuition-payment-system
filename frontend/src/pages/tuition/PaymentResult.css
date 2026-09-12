@@ -1,0 +1,624 @@
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+:root {
+    --primary: #a8302f;
+    --primary-dark: #8f2424;
+
+    --secondary: #0a629e;
+
+    --success: #006857;
+
+    --error: #ba1a1a;
+    --error-bg: #ffdad6;
+
+    --background: #fff8f7;
+
+    --surface: #ffffff;
+    --surface-soft: #fff0ef;
+
+    --border: #dfbfbc;
+    --border-soft: #f1dddd;
+
+    --text: #251817;
+    --text-soft: #58413f;
+}
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+
+    background: var(--background);
+
+    font-family: "Roboto", sans-serif;
+
+    color: var(--text);
+}
+
+
+/* =====================================================
+   STATE DEMO BUTTON
+===================================================== */
+
+.state-buttons {
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    display: flex;
+    gap: 8px;
+
+    z-index: 10;
+}
+
+
+.state-btn {
+    padding: 9px 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 999px;
+
+    background: white;
+
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.state-btn:hover {
+    background: #fbe3e1;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.result-card {
+    width: 100%;
+    max-width: 520px;
+
+    overflow: hidden;
+
+    border: 1px solid #dee2e6;
+
+    border-radius: 14px;
+
+    background: white;
+
+    box-shadow:
+        0 5px 25px
+        rgba(0, 0, 0, 0.07);
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+/* =====================================================
+   RESULT HEADER
+===================================================== */
+
+.result-header {
+    padding: 40px 32px 26px;
+
+    border-bottom: 1px solid #fbe3e1;
+
+    text-align: center;
+}
+
+
+.success-icon {
+    display: block;
+
+    margin-bottom: 14px;
+
+    color: var(--success);
+
+    font-size: 72px;
+
+    font-variation-settings:
+        "FILL" 1;
+}
+
+
+.result-header h1 {
+    font-family: "Roboto Slab", serif;
+
+    font-size: 24px;
+
+    line-height: 1.3;
+
+    color: var(--text);
+}
+
+
+.result-header p {
+    margin-top: 8px;
+
+    color: var(--text-soft);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   RECEIPT
+===================================================== */
+
+.receipt {
+    padding: 28px 32px;
+}
+
+
+.receipt h2 {
+    margin-bottom: 18px;
+
+    color: var(--text-soft);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+}
+
+
+.receipt-row {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid
+        #fbe3e1;
+}
+
+
+.receipt-row > span {
+    flex-shrink: 0;
+
+    color: var(--text-soft);
+
+    font-size: 14px;
+}
+
+
+.receipt-row strong {
+    max-width: 65%;
+
+    text-align: right;
+
+    color: var(--text);
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+
+.receipt-row .payment-amount {
+    color: var(--primary);
+
+    font-family: "Roboto Slab", serif;
+
+    font-size: 19px;
+
+    font-weight: 700;
+}
+
+
+.last-row {
+    border-bottom: none;
+}
+
+
+/* =====================================================
+   SUCCESS ACTION
+===================================================== */
+
+.success-actions {
+    padding: 22px 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    border-top: 1px solid #dee2e6;
+}
+
+
+.receipt-btn,
+.primary-btn {
+    min-height: 48px;
+
+    padding: 0 20px;
+
+    border-radius: 8px;
+
+    font-family: "Roboto", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.receipt-btn {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: var(--text);
+}
+
+
+.receipt-btn:hover {
+    background: #fbe3e1;
+}
+
+
+.receipt-btn .material-symbols-outlined {
+    font-size: 19px;
+}
+
+
+.primary-btn {
+    border: none;
+
+    background: var(--primary);
+
+    color: white;
+}
+
+
+.primary-btn:hover {
+    background: var(--primary-dark);
+}
+
+
+.primary-btn:active {
+    transform: scale(0.98);
+}
+
+
+/* =====================================================
+   OTHER TRANSACTION
+===================================================== */
+
+.other-action {
+    padding: 0 32px 24px;
+
+    text-align: center;
+}
+
+
+.other-action button {
+    padding: 8px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--secondary);
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.other-action button:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error-card {
+    border-color: var(--error-bg);
+
+    box-shadow:
+        0 5px 25px
+        rgba(186, 26, 26, 0.08);
+}
+
+
+.error-header {
+    border-bottom: none;
+}
+
+
+.error-icon {
+    display: block;
+
+    margin-bottom: 14px;
+
+    color: var(--error);
+
+    font-size: 72px;
+
+    font-variation-settings:
+        "FILL" 1;
+}
+
+
+/* =====================================================
+   ERROR CONTENT
+===================================================== */
+
+.error-content {
+    padding: 0 32px 28px;
+}
+
+
+.error-message {
+    padding: 16px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    border: 1px solid var(--error-bg);
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 218, 214, 0.3);
+}
+
+
+.error-message > .material-symbols-outlined {
+    flex-shrink: 0;
+
+    color: var(--error);
+}
+
+
+.error-message strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #93000a;
+
+    font-size: 14px;
+}
+
+
+.error-message p {
+    color: var(--text);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+.error-details {
+    margin-top: 18px;
+}
+
+
+/* =====================================================
+   ERROR ACTION
+===================================================== */
+
+.error-actions {
+    padding: 20px 32px 28px;
+}
+
+
+.full-btn {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+
+.full-btn .material-symbols-outlined {
+    font-size: 19px;
+}
+
+
+.error-secondary-actions {
+    margin-top: 12px;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+.secondary-btn,
+.support-btn {
+    width: 50%;
+
+    height: 48px;
+
+    border-radius: 8px;
+
+    background: white;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.secondary-btn {
+    border: 1px solid var(--border);
+
+    color: var(--text);
+}
+
+
+.support-btn {
+    border: 1px solid transparent;
+
+    color: var(--secondary);
+}
+
+
+.secondary-btn:hover,
+.support-btn:hover {
+    background: #fbe3e1;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 75px 15px 20px;
+    }
+
+
+    .state-buttons {
+        top: 12px;
+        right: 12px;
+    }
+
+
+    .result-header {
+        padding:
+            32px
+            20px
+            22px;
+    }
+
+
+    .result-header h1 {
+        font-size: 21px;
+    }
+
+
+    .receipt {
+        padding:
+            24px
+            20px;
+    }
+
+
+    .receipt-row {
+        gap: 12px;
+    }
+
+
+    .receipt-row strong {
+        max-width: 60%;
+    }
+
+
+    .success-actions {
+        padding:
+            20px;
+
+        flex-direction: column;
+    }
+
+
+    .receipt-btn,
+    .primary-btn {
+        width: 100%;
+    }
+
+
+    .other-action {
+        padding:
+            0
+            20px
+            20px;
+    }
+
+
+    .error-content {
+        padding:
+            0
+            20px
+            24px;
+    }
+
+
+    .error-actions {
+        padding:
+            18px
+            20px
+            24px;
+    }
+
+}

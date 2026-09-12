@@ -1,0 +1,693 @@
+/* =====================================================
+   RESET + VARIABLES
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #a8302f;
+    --primary-dark: #8f2424;
+    --primary-hover: #c94a47;
+    --primary-light: #fff0ef;
+
+    --secondary: #0a629e;
+
+    --background: #fff8f7;
+
+    --surface: #ffffff;
+    --surface-soft: #fff0ef;
+    --surface-high: #fbe3e1;
+
+    --border: #dfbfbc;
+    --border-soft: #f1dddd;
+
+    --text: #251817;
+    --text-soft: #58413f;
+
+    --success: #087b54;
+    --success-bg: #e8f8f1;
+
+    --danger: #ba1a1a;
+    --danger-bg: #ffdad6;
+}
+
+
+/* =====================================================
+   MATERIAL SYMBOLS
+===================================================== */
+
+.material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+
+    font-size: 24px;
+    line-height: 1;
+
+    letter-spacing: normal;
+    text-transform: none;
+
+    display: inline-block;
+
+    white-space: nowrap;
+    word-wrap: normal;
+
+    direction: ltr;
+
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+
+    font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+}
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: max(884px, 100dvh);
+
+    font-family:
+        "Roboto",
+        Arial,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+/*
+   Vì header của 2.html chủ yếu dùng Tailwind,
+   phần này giúp nó có cảm giác giống 3.css hơn.
+*/
+
+body > header {
+    background:
+        rgba(255, 248, 247, 0.96);
+
+    backdrop-filter: blur(8px);
+
+    border-bottom-color: var(--border);
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.03);
+}
+
+body > header h1 {
+    color: var(--primary);
+
+    font-family:
+        "Roboto Slab",
+        serif;
+
+    font-weight: 700;
+}
+
+
+/* NÚT BACK */
+
+#backTopBtn {
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
+}
+
+#backTopBtn:hover {
+    background: var(--primary-light);
+}
+
+#backTopBtn:active {
+    transform: scale(0.95);
+}
+
+
+/* =====================================================
+   STEPPER
+===================================================== */
+
+/*
+   STEP 1: đã hoàn thành
+*/
+
+.step-completed {
+    color: var(--secondary);
+
+    border-color: var(--secondary);
+}
+
+
+/*
+   STEP 2: đang active
+*/
+
+.step-active {
+    color: var(--primary);
+
+    border-color: var(--primary);
+}
+
+
+/*
+   STEP 3: chưa thực hiện
+*/
+
+.step-inactive {
+    color: #8c716e;
+
+    border-color: var(--border);
+}
+
+/* Đường ngang giữa bước 1 và bước 2 */
+.step-line-completed {
+    background-color: #0a629e !important;
+}
+
+/* Đường ngang giữa bước 2 và bước 3 */
+.step-line-inactive {
+    background-color: #dfbfbc !important;
+}
+
+/* ICON CHECK */
+
+.step-icon {
+    font-size: 18px;
+}
+
+
+/*
+   Circle active của step 2
+*/
+
+.step-active.bg-primary {
+    background: var(--primary) !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(168, 48, 47, 0.10);
+}
+
+
+/*
+   Circle completed
+*/
+
+.step-completed.bg-background {
+    background: var(--background) !important;
+}
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+main h1,
+main h2 {
+    font-family:
+        "Roboto Slab",
+        serif;
+}
+
+main > header h1,
+main > header h2 {
+    color: var(--text);
+}
+
+
+/* =====================================================
+   TUITION LIST
+===================================================== */
+
+#tuitionList {
+    width: 100%;
+}
+
+
+/* =====================================================
+   TUITION ITEM
+===================================================== */
+
+.tuition-item {
+    position: relative;
+
+    width: 100%;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.04);
+
+    transition:
+        border-color 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s,
+        background-color 0.2s;
+}
+
+
+/* HOVER */
+
+.tuition-item:hover {
+    transform:
+        translateY(-1px);
+
+    border-color:
+        #d6aaa7;
+
+    background:
+        #fffdfd;
+
+    box-shadow:
+        0 4px 12px
+        rgba(70, 30, 30, 0.07);
+}
+
+
+/* ICON BÊN TRONG ITEM */
+
+.item-icon {
+    font-size: 21px;
+
+    color: var(--secondary);
+}
+
+
+/* TITLE ITEM */
+
+.tuition-item h3 {
+    color: var(--text);
+
+    font-family:
+        "Roboto Slab",
+        serif;
+
+    font-weight: 600;
+}
+
+
+/* DESCRIPTION */
+
+.tuition-item p {
+    color: var(--text-soft);
+}
+
+
+/* =====================================================
+   TUITION PRICE
+===================================================== */
+
+.tuition-price {
+    color: var(--primary);
+
+    font-family:
+        "Roboto Slab",
+        serif;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/*
+   Nếu HTML chưa có class tuition-price
+   thì bắt luôn phần giá hiện tại.
+*/
+
+.tuition-item .text-primary {
+    color: var(--primary) !important;
+
+    font-family:
+        "Roboto Slab",
+        serif;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   DEADLINE
+===================================================== */
+
+.deadline-badge {
+    display: inline-block;
+
+    width: fit-content;
+
+    margin-top: 8px;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(107, 217, 190, 0.18);
+
+    color: var(--success);
+
+    font-size: 11px;
+
+    font-weight: 500;
+}
+
+
+/*
+   Hỗ trợ badge hiện tại của Tailwind
+*/
+
+.tuition-item .text-tertiary {
+    color: var(--success) !important;
+}
+
+
+/* =====================================================
+   TOTAL
+===================================================== */
+
+.total-amount {
+    color: var(--primary);
+
+    font-family:
+        "Roboto Slab",
+        serif;
+
+    font-size: 30px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    letter-spacing: -0.3px;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    background:
+        rgba(255, 255, 255, 0.98);
+
+    backdrop-filter: blur(8px);
+
+    border-top-color:
+        var(--border) !important;
+}
+
+
+.footer-shadow {
+    box-shadow:
+        0 -4px 16px
+        rgba(0, 0, 0, 0.05);
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+#backBtn {
+    background: #ffffff;
+
+    border-color:
+        var(--border) !important;
+
+    color:
+        var(--text);
+
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+
+#backBtn:hover {
+    background:
+        var(--primary-light);
+
+    border-color:
+        #d0aaa7 !important;
+}
+
+#backBtn:active {
+    transform:
+        scale(0.98);
+}
+
+
+/* =====================================================
+   CONTINUE BUTTON
+===================================================== */
+
+.continue-btn {
+    background:
+        var(--primary) !important;
+
+    color:
+        #ffffff !important;
+
+    border:
+        none;
+
+    box-shadow:
+        0 2px 6px
+        rgba(168, 48, 47, 0.16);
+
+    transition:
+        background-color 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.continue-btn:hover {
+    background:
+        var(--primary-dark) !important;
+
+    box-shadow:
+        0 4px 10px
+        rgba(168, 48, 47, 0.20);
+}
+
+
+.continue-btn:active {
+    transform:
+        scale(0.98);
+}
+
+
+.continue-btn:disabled {
+    background:
+        #eadada !important;
+
+    color:
+        #8c716e !important;
+
+    box-shadow:
+        none;
+
+    cursor:
+        not-allowed;
+}
+
+
+/* ICON TRONG NÚT */
+
+.continue-icon {
+    font-size: 18px;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+#emptyState {
+    display: none;
+}
+
+
+#emptyState.show {
+    display: flex;
+}
+
+
+/* ICON EMPTY */
+
+.empty-icon {
+    font-size: 64px;
+}
+
+
+/* =====================================================
+   CARD EMPTY STATE
+===================================================== */
+
+#emptyState {
+    background:
+        var(--surface);
+
+    border-color:
+        var(--border);
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.04);
+}
+
+
+#emptyState h3 {
+    font-family:
+        "Roboto Slab",
+        serif;
+}
+
+
+#emptyState p {
+    color:
+        var(--text-soft);
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+::-webkit-scrollbar-track {
+    background:
+        transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background:
+        var(--border);
+
+    border-radius:
+        5px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background:
+        #b68f8b;
+}
+
+
+/* =====================================================
+   RESPONSIVE TABLET
+===================================================== */
+
+@media (max-width: 767px) {
+
+    body {
+        padding-bottom:
+            145px;
+    }
+
+
+    .tuition-item {
+        padding:
+            15px;
+    }
+
+
+    .total-amount {
+        font-size:
+            23px;
+    }
+
+
+    /*
+       Trên mobile vẫn giữ circle step
+       nhưng ẩn bớt chữ step 1/3 theo HTML hiện tại.
+    */
+
+    .step-icon {
+        font-size:
+            17px;
+    }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+    .tuition-item {
+        padding:
+            14px;
+
+        border-radius:
+            12px;
+    }
+
+
+    .total-amount {
+        font-size:
+            20px;
+    }
+
+
+    .tuition-item h3 {
+        font-size:
+            16px;
+    }
+
+
+    .tuition-item p {
+        font-size:
+            12px;
+    }
+
+}
