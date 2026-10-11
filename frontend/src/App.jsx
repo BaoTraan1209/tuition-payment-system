@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import Login from "./pages/auth/Login";
+
 import Homepage from "./pages/homepage/Homepage";
 
 import Transaction from "./pages/transaction/Transaction";
@@ -11,12 +13,12 @@ import TuitionDetail from "./pages/tuition/TuitionDetail";
 import PaymentConfirm from "./pages/tuition/PaymentConfirm";
 import PaymentResult from "./pages/tuition/PaymentResult";
 
-
 function App() {
 
-    const [page, setPage] =
-        useState("home");
+    const [page, setPage] = useState("home");
 
+    // Lưu JWT sau khi đăng nhập
+    const [token, setToken] = useState(null);
 
     function renderPage() {
 
@@ -49,17 +51,17 @@ function App() {
             default:
                 return <Homepage />;
         }
-
     }
 
+    // Chưa đăng nhập thì hiển thị Login
+    if (!token) {
+        return <Login onLogin={setToken} />;
+    }
 
     return (
-
         <div>
 
-            {/* =====================================================
-                            MENU TEST FRONTEND
-            ===================================================== */}
+            {/* MENU TEST FRONTEND */}
 
             <div
                 style={{
@@ -109,20 +111,22 @@ function App() {
                     Payment Result
                 </button>
 
+                {/* Nút đăng xuất */}
+                <button onClick={() => {
+                    setToken(null);
+                    setPage("home");
+                }}>
+                    Đăng xuất
+                </button>
+
             </div>
 
-
-            {/* =====================================================
-                            PAGE HIỆN TẠI
-            ===================================================== */}
+            {/* PAGE HIỆN TẠI */}
 
             {renderPage()}
 
         </div>
-
     );
-
 }
-
 
 export default App;
