@@ -1,36 +1,21 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from src.Controllers.auth_controller import router as auth_router
 
 app = FastAPI()
 
-# Tài khoản mẫu
-users = {
-    "ngoc123": "123456"
-}
+# Cho phép Frontend React kết nối Backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"]
+)
 
-# Dữ liệu đăng nhập
-class LoginRequest(BaseModel):
-    username: str
-    password: str
+# Đăng ký các API Authentication
+app.include_router(auth_router)
 
-# API đăng nhập
-@app.post("/login")
-def login(data: LoginRequest):
-
-    # Kiểm tra tài khoản
-    if data.username not in users:
-        raise HTTPException(
-            status_code=401,
-            detail="Sai tài khoản hoặc mật khẩu"
-        )
-
-    # Kiểm tra mật khẩu
-    if users[data.username] != data.password:
-        raise HTTPException(
-            status_code=401,
-            detail="Sai tài khoản hoặc mật khẩu"
-        )
-
-    return {
-        "message": "Đăng nhập thành công"
-    }

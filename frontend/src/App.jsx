@@ -1,132 +1,116 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Login from "./pages/auth/Login";
-
-import Homepage from "./pages/homepage/Homepage";
-
+import Homepage from "./pages/homepage/HomePage";
 import Transaction from "./pages/transaction/Transaction";
 import TransactionHistory from "./pages/transaction/TransactionHistory";
-
 import Tuition from "./pages/tuition/Tuition";
 import StudentInfo from "./pages/tuition/StudentInfo";
 import TuitionDetail from "./pages/tuition/TuitionDetail";
 import PaymentConfirm from "./pages/tuition/PaymentConfirm";
 import PaymentResult from "./pages/tuition/PaymentResult";
 
-function App() {
+const API_URL = "http://127.0.0.1:8000";
 
-    const [page, setPage] = useState("home");
+const pages = {
+    home: Homepage,
+    transaction: Transaction,
+    "transaction-history": TransactionHistory,
+    tuition: Tuition,
+    "student-info": StudentInfo,
+    "tuition-detail": TuitionDetail,
+    "payment-confirm": PaymentConfirm,
+    "payment-result": PaymentResult
+};
 
-    // Lưu JWT sau khi đăng nhập
+export default function App() {
     const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null);
+    const [page, setPage] = useState("home");
+    const [authError, setAuthError] = useState("");
 
-    function renderPage() {
-
-        switch (page) {
-
-            case "home":
-                return <Homepage />;
-
-            case "transaction":
-                return <Transaction />;
-
-            case "transaction-history":
-                return <TransactionHistory />;
-
-            case "tuition":
-                return <Tuition />;
-
-            case "student-info":
-                return <StudentInfo />;
-
-            case "tuition-detail":
-                return <TuitionDetail />;
-
-            case "payment-confirm":
-                return <PaymentConfirm />;
-
-            case "payment-result":
-                return <PaymentResult />;
-
-            default:
-                return <Homepage />;
+    useEffect(() => {
+        if (!token) {
+            setUser(null);
+            return;
         }
+
+        const controller = new AbortController();
+
+        async function verifyLogin() {
+            try {
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    signal: controller.signal
+                });
+
+                if (!response.ok) {
+                    throw new Error("Phiên đăng nhập không hợp lệ");
+                }
+
+                const data = await response.json();
+
+                setUser(data);
+                setPage("home");
+
+            } catch (error) {
+                if (error.name !== "AbortError") {
+                    setAuthError(error.message);
+                    setToken(null);
+                }
+            }
+        }
+
+        verifyLogin();
+
+        return () => controller.abort();
+    }, [token]);
+
+    function handleLogin(accessToken) {
+        setAuthError("");
+        setUser(null);
+        setToken(accessToken);
     }
 
-    // Chưa đăng nhập thì hiển thị Login
-    if (!token) {
-        return <Login onLogin={setToken} />;
+    function handleLogout() {
+        setUser(null);
+        setToken(null);
+        setPage("home");
     }
+
+    // Chưa đăng nhập
+    if (!token) {
+        return (
+            <>
+                {authError && (
+                    <p
+                        role="alert"
+                        style={{ color: "red", textAlign: "center" }}
+                    >
+                        {authError}
+                    </p>
+                )}
+
+                <Login onLogin={handleLogin} />
+            </>
+        );
+    }
+
+    // Đang xác thực JWT
+    if (!user) {
+        return <p>Đang xác thực tài khoản...</p>;
+    }
+
+    const CurrentPage = pages[page] || Homepage;
 
     return (
-        <div>
-
-            {/* MENU TEST FRONTEND */}
-
-            <div
-                style={{
-                    position: "fixed",
-                    top: "10px",
-                    right: "10px",
-                    zIndex: 99999,
-                    background: "white",
-                    padding: "10px",
-                    borderRadius: "10px",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "6px"
-                }}
-            >
-
-                <button onClick={() => setPage("home")}>
-                    Homepage
-                </button>
-
-                <button onClick={() => setPage("transaction")}>
-                    Transaction
-                </button>
-
-                <button onClick={() => setPage("transaction-history")}>
-                    Transaction History
-                </button>
-
-                <button onClick={() => setPage("tuition")}>
-                    Tuition
-                </button>
-
-                <button onClick={() => setPage("student-info")}>
-                    Student Info
-                </button>
-
-                <button onClick={() => setPage("tuition-detail")}>
-                    Tuition Detail
-                </button>
-
-                <button onClick={() => setPage("payment-confirm")}>
-                    Payment Confirm
-                </button>
-
-                <button onClick={() => setPage("payment-result")}>
-                    Payment Result
-                </button>
-
-                {/* Nút đăng xuất */}
-                <button onClick={() => {
-                    setToken(null);
-                    setPage("home");
-                }}>
-                    Đăng xuất
-                </button>
-
-            </div>
-
-            {/* PAGE HIỆN TẠI */}
-
-            {renderPage()}
-
-        </div>
+    <CurrentPage
+        user={user}
+        token={token}
+        onNavigate={setPage}
+        onLogout={handleLogout}
+        />
     );
 }
-
-export default App;

@@ -1,13 +1,15 @@
-from sqlalchemy import Column, Integer, String, Numeric
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import synonym
 from src.config.db import Base
 
 class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
+    __tablename__ = "payers"
+    payer_id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)
-    password_hash = Column(String(255), nullable=False)
-    full_name = Column(String(100), nullable=False)
-    email = Column(String(100))
+    password_hash = Column("password", String(255), nullable=False)
+    fullname = Column(String(100), nullable=False)
     phone = Column(String(20))
-    balance = Column(Numeric(15, 2), default=0)
+    email = Column(String(100))
+    # Hỗ trợ code Auth cũ sử dụng user.id và user.full_name
+    id = synonym("payer_id")
+    full_name = synonym("fullname")
