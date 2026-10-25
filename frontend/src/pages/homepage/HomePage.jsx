@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import "./Homepage.css";
+import { getMyTransactions } from "../services/transactionService.js";
+import "./HomePage.css";
 
 function Homepage({ user, onNavigate, onLogout }) {
 
     // CURRENT DATE
     const [currentDate, setCurrentDate] = useState("");
+    const [recentTransactions, setRecentTransactions] = useState([]);
+    const [transactionsLoading, setTransactionsLoading] = useState(true);
+    const [transactionsError, setTransactionsError] = useState("");
 
     useEffect(() => {
         const today = new Date();
@@ -17,6 +21,41 @@ function Homepage({ user, onNavigate, onLogout }) {
             })
         );
     }, []);
+
+
+
+    // Load real transactions from backend; never substitute demo transactions.
+    useEffect(() => {
+        let active = true;
+        (async () => {
+            try {
+                setTransactionsLoading(true);
+                setTransactionsError("");
+                const response = await getMyTransactions();
+                const rows = Array.isArray(response)
+                    ? response
+                    : response?.transactions ?? response?.items ?? response?.data ?? [];
+                if (active) setRecentTransactions(Array.isArray(rows) ? rows.slice(0, 5) : []);
+            } catch (error) {
+                if (active) {
+                    setTransactionsError(
+                        error?.response?.data?.detail ||
+                        error?.message ||
+                        "Không thể tải giao dịch từ backend."
+                    );
+                }
+            } finally {
+                if (active) setTransactionsLoading(false);
+            }
+        })();
+        return () => { active = false; };
+    }, []);
+
+    const formatMoney = (value) => new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+        maximumFractionDigits: 0
+    }).format(Number(value ?? 0));
 
     // USER DATA FROM MYSQL
     const fullname = user?.fullname || "Chưa cập nhật";
@@ -34,11 +73,11 @@ function Homepage({ user, onNavigate, onLogout }) {
     // COPY ACCOUNT NUMBER
     const [copied, setCopied] = useState(false);
 
-    // Số thẻ hiện chỉ dùng minh họa giao diện
-    const accountNumber = "1029384756";
+    const accountNumber = user?.account_number || user?.accountNumber || "";
 
     const handleCopyAccount = async () => {
         try {
+            if (!accountNumber) return;
             await navigator.clipboard.writeText(accountNumber);
             setCopied(true);
 
@@ -250,173 +289,39 @@ function Homepage({ user, onNavigate, onLogout }) {
                             <p className="welcome-text">
                                 Hôm nay: {currentDate}
                             </p>
+                            <p className="welcome-description">
+                                Chào mừng bạn đến với iBanking TDTU. Bạn có thể tra cứu học phí,
+                                theo dõi lịch sử giao dịch và quản lý thông tin tài khoản tại đây.
+                            </p>
                         </div>
                     </section>
 
-                    {/* ACCOUNT OVERVIEW */}
-                    <section className="account-overview">
-
-                        {/* BANK CARD */}
-                        <div className="ibanking-card">
-
-                            <div className="card-circle circle-one"></div>
-                            <div className="card-circle circle-two"></div>
-
-                            {/* TOP */}
-                            <div className="bank-card-top">
-                                <div className="bank-brand">
-
-                                    <div className="Logo">
-                                        <i className="bx bxs-bank"></i>
-                                    </div>
-
-                                    <div>
-                                        <h3>iBanking</h3>
-                                        <span>TDTU STUDENT CARD</span>
-                                    </div>
-
-                                </div>
-
-                                <div className="card-network">
-                                    <i className="bx bx-wifi"></i>
-                                    <strong>DEBIT</strong>
-                                </div>
-                            </div>
-
-                            {/* CHIP */}
-                            <div className="bank-chip">
-                                <div className="chip-line chip-line-1"></div>
-                                <div className="chip-line chip-line-2"></div>
-                                <div className="chip-line chip-line-3"></div>
-                                <div className="chip-center"></div>
-                            </div>
-
-                            {/* CARD NUMBER - DEMO */}
-                            <div className="bank-card-number">
-                                <span>1029</span>
-                                <span>3847</span>
-                                <span>5612</span>
-                                <span>7890</span>
-
-                                <button
-                                    className="copy-btn"
-                                    type="button"
-                                    title="Sao chép số thẻ minh họa"
-                                    onClick={handleCopyAccount}
-                                >
-                                    <i className={
-                                        copied
-                                            ? "bx bx-check"
-                                            : "bx bx-copy"
-                                    }></i>
-                                </button>
-                            </div>
-
-                            {/* BOTTOM */}
-                            <div className="bank-card-bottom">
-
-                                <div className="card-holder">
-                                    <span className="card-label">
-                                        CARD HOLDER
-                                    </span>
-
-                                    <strong>{fullname.toUpperCase()}</strong>
-                                </div>
-
-                                <div className="valid-thru">
-                                    <span className="card-label">
-                                        VALID THRU
-                                    </span>
-
-                                    <strong>19/10/2026</strong>
-                                </div>
-
-                                <div className="card-brand-mark">
-                                    <div className="brand-circle"></div>
-                                    <div className="brand-circle second"></div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        {/* ACCOUNT PANEL */}
-                        <div className="account-panel">
-
-                            {/* BALANCE */}
-                            <div className="balance-area">
-                                <div className="balance-label">
-                                    <span>SỐ DƯ KHẢ DỤNG</span>
-
-                                    <button
-                                        className="eye-btn"
-                                        type="button"
-                                        title="Ẩn / hiện số dư"
-                                        onClick={() => {
-                                            setBalanceVisible(!balanceVisible);
-                                        }}
-                                    >
-                                        <i className={
-                                            balanceVisible
-                                                ? "bx bx-hide"
-                                                : "bx bx-show"
-                                        }></i>
-                                    </button>
-                                </div>
-
-                                <h2>
-                                    {
-                                        balanceVisible
-                                            ? balance
-                                            : "••••••••••"
-                                    }
-
-                                    <small>VND</small>
-                                </h2>
-                            </div>
-
-                            <div className="account-divider"></div>
-
-                            {/* ACCOUNT INFO */}
-                            <div className="account-info-grid">
-
-                                {/* NAME */}
-                                <div className="account-info-card">
-                                    <div className="info-icon">
-                                        <i className="bx bx-user"></i>
-                                    </div>
-
-                                    <div>
-                                        <span>Họ và tên</span>
-                                        <strong>{fullname}</strong>
-                                    </div>
-                                </div>
-
-                                {/* PHONE */}
-                                <div className="account-info-card">
-                                    <div className="info-icon">
-                                        <i className="bx bx-mobile-alt"></i>
-                                    </div>
-
-                                    <div>
-                                        <span>Số điện thoại</span>
-                                        <strong>{phone}</strong>
-                                    </div>
-                                </div>
-
-                                {/* EMAIL */}
-                                <div className="account-info-card">
-                                    <div className="info-icon">
-                                        <i className="bx bx-envelope"></i>
-                                    </div>
-
-                                    <div>
-                                        <span>Địa chỉ Email</span>
-                                        <strong>{email}</strong>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                    {/* QUICK ACTIONS */}
+                    <section className="home-quick-actions">
+                        <button type="button" className="home-action-card" onClick={() => handleMenuClick("tuition")}>
+                            <span className="home-action-icon"><i className="bx bxs-graduation"></i></span>
+                            <span className="home-action-copy">
+                                <strong>Tra cứu học phí</strong>
+                                <small>Xem các khoản thu và số tiền cần thanh toán</small>
+                            </span>
+                            <i className="bx bx-chevron-right home-action-arrow"></i>
+                        </button>
+                        <button type="button" className="home-action-card" onClick={() => handleMenuClick("transaction")}>
+                            <span className="home-action-icon"><i className="bx bx-user-circle"></i></span>
+                            <span className="home-action-copy">
+                                <strong>Tài khoản</strong>
+                                <small>Xem thông tin cá nhân và số dư khả dụng</small>
+                            </span>
+                            <i className="bx bx-chevron-right home-action-arrow"></i>
+                        </button>
+                        <button type="button" className="home-action-card" onClick={() => handleMenuClick("history")}>
+                            <span className="home-action-icon"><i className="bx bx-history"></i></span>
+                            <span className="home-action-copy">
+                                <strong>Lịch sử giao dịch</strong>
+                                <small>Tra cứu các giao dịch đã thực hiện</small>
+                            </span>
+                            <i className="bx bx-chevron-right home-action-arrow"></i>
+                        </button>
                     </section>
 
                     {/* TRANSACTIONS */}
@@ -460,19 +365,20 @@ function Homepage({ user, onNavigate, onLogout }) {
                                     </thead>
 
                                     <tbody>
-                                        {/* Chưa kết nối TransactionDB */}
-                                        <tr>
-                                            <td
-                                                colSpan={4}
-                                                style={{
-                                                    textAlign: "center",
-                                                    padding: "30px",
-                                                    color: "#888"
-                                                }}
-                                            >
-                                                Chưa có dữ liệu giao dịch
-                                            </td>
-                                        </tr>
+                                        {transactionsLoading ? (
+                                            <tr><td colSpan={4} style={{ textAlign: "center", padding: "30px" }}>Đang tải giao dịch...</td></tr>
+                                        ) : transactionsError ? (
+                                            <tr><td colSpan={4} role="alert" style={{ textAlign: "center", padding: "30px" }}>{String(transactionsError)}</td></tr>
+                                        ) : recentTransactions.length === 0 ? (
+                                            <tr><td colSpan={4} style={{ textAlign: "center", padding: "30px", color: "#888" }}>Backend chưa trả về dữ liệu giao dịch.</td></tr>
+                                        ) : recentTransactions.map((item, index) => (
+                                            <tr key={item.transaction_id ?? item.id ?? index}>
+                                                <td>{item.description ?? item.tuition_name ?? item.transaction_id ?? item.id ?? "Giao dịch"}</td>
+                                                <td>{item.created_at ? new Date(item.created_at).toLocaleDateString("vi-VN") : "—"}</td>
+                                                <td>{item.status ?? "—"}</td>
+                                                <td className="text-right">{formatMoney(item.amount ?? item.total_amount)}</td>
+                                            </tr>
+                                        ))}
                                     </tbody>
 
                                 </table>

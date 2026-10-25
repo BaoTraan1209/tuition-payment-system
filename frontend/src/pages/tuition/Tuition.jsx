@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./Tuition.css";
 
 
-function Tuition() {
+function Tuition({ onNavigate, onLogout }) {
 
 
     useEffect(() => {
@@ -45,6 +45,12 @@ function Tuition() {
         const semester =
             document.getElementById("semester");
 
+        const logoutBtn = document.getElementById("logoutBtn");
+        const handleLogout = () => {
+            if (typeof onLogout === "function") onLogout();
+        };
+        logoutBtn?.addEventListener("click", handleLogout);
+
 
         // =============================================
         // FORMAT TIỀN
@@ -64,42 +70,33 @@ function Tuition() {
         // =============================================
 
         function calculateTotal() {
-
             let total = 0;
 
-
-            feeCheckboxes.forEach(
-                (checkbox) => {
-
+            // Nếu giao diện có checkbox chọn khoản thu, ưu tiên tính các khoản được chọn.
+            if (feeCheckboxes.length > 0) {
+                feeCheckboxes.forEach((checkbox) => {
                     if (checkbox.checked) {
-
-                        total += Number(
-                            checkbox.dataset.amount
-                        );
-
+                        total += Number(checkbox.dataset.amount || 0);
                     }
-
-                }
-            );
-
-
-            totalAmount.textContent =
-                formatMoney(total);
-
-
-            if (total === 0) {
-
-                payBtn.disabled = true;
-
+                });
             } else {
-
-                payBtn.disabled = false;
-
+                // Giao diện hiện tại chưa có checkbox. Tính tổng các khoản có trạng thái
+                // "Chưa thanh toán" để tổng tiền không bị 0 khi vẫn còn khoản chưa hoàn tất.
+                const tuitionRows = document.querySelectorAll(".tuition-card tbody tr");
+                tuitionRows.forEach((row) => {
+                    if (row.querySelector(".status.unpaid")) {
+                        const amountCell = row.querySelectorAll("td")[2];
+                        if (amountCell) {
+                            const amount = Number(amountCell.textContent.replace(/[^0-9]/g, ""));
+                            if (Number.isFinite(amount)) total += amount;
+                        }
+                    }
+                });
             }
 
-
+            if (totalAmount) totalAmount.textContent = formatMoney(total);
+            if (payBtn) payBtn.disabled = total <= 0;
             return total;
-
         }
 
 
@@ -180,7 +177,7 @@ function Tuition() {
         };
 
 
-        searchTuitionBtn.addEventListener(
+        searchTuitionBtn?.addEventListener(
             "click",
             handleSearch
         );
@@ -218,7 +215,7 @@ function Tuition() {
         };
 
 
-        payBtn.addEventListener(
+        payBtn?.addEventListener(
             "click",
             handlePay
         );
@@ -237,13 +234,13 @@ function Tuition() {
         }
 
 
-        closeModal.addEventListener(
+        closeModal?.addEventListener(
             "click",
             closePaymentModal
         );
 
 
-        cancelPayment.addEventListener(
+        cancelPayment?.addEventListener(
             "click",
             closePaymentModal
         );
@@ -265,7 +262,7 @@ function Tuition() {
         };
 
 
-        paymentModal.addEventListener(
+        paymentModal?.addEventListener(
             "click",
             handleModalOutside
         );
@@ -292,91 +289,28 @@ function Tuition() {
                 true;
 
 
-            setTimeout(
-                () => {
+            // Không giả lập thanh toán thành công ở Frontend.
+            // Chuyển sang luồng xác nhận/OTP để backend xử lý giao dịch thật.
+            sessionStorage.setItem("selected_tuition_amount", String(total));
+            // TODO: thay ID demo bằng tuition_id thực tế từ API.
+            if (!sessionStorage.getItem("selected_tuition_id")) {
+                sessionStorage.setItem("selected_tuition_id", "1");
+            }
 
-                    alert(
-                        `Thanh toán ${formatMoney(total)} VND thành công!`
-                    );
+            closePaymentModal();
+            confirmPayment.textContent = "Xác nhận thanh toán";
+            confirmPayment.disabled = false;
 
-
-                    feeCheckboxes.forEach(
-                        (checkbox) => {
-
-                            if (
-                                checkbox.checked
-                            ) {
-
-                                const row =
-                                    checkbox.closest(
-                                        "tr"
-                                    );
-
-
-                                const status =
-                                    row.querySelector(
-                                        ".status"
-                                    );
-
-
-                                status.textContent =
-                                    "Đã thanh toán";
-
-
-                                status.classList.remove(
-                                    "unpaid"
-                                );
-
-
-                                status.classList.add(
-                                    "paid"
-                                );
-
-
-                                checkbox.checked =
-                                    false;
-
-
-                                checkbox.disabled =
-                                    true;
-
-
-                                checkbox
-                                    .closest(
-                                        ".custom-checkbox"
-                                    )
-                                    .classList
-                                    .add(
-                                        "disabled"
-                                    );
-
-                            }
-
-                        }
-                    );
-
-
-                    calculateTotal();
-
-
-                    confirmPayment.textContent =
-                        "Xác nhận thanh toán";
-
-
-                    confirmPayment.disabled =
-                        false;
-
-
-                    closePaymentModal();
-
-                },
-                1000
-            );
+            if (typeof onNavigate === "function") {
+                onNavigate("payment-confirm");
+            } else {
+                alert("Không thể chuyển sang bước xác nhận thanh toán.");
+            }
 
         };
 
 
-        confirmPayment.addEventListener(
+        confirmPayment?.addEventListener(
             "click",
             handleConfirmPayment
         );
@@ -426,13 +360,13 @@ function Tuition() {
         }
 
 
-        mobileMenuBtn.addEventListener(
+        mobileMenuBtn?.addEventListener(
             "click",
             openSidebar
         );
 
 
-        sidebarOverlay.addEventListener(
+        sidebarOverlay?.addEventListener(
             "click",
             closeSidebar
         );
@@ -463,57 +397,58 @@ function Tuition() {
             );
 
 
-            searchTuitionBtn.removeEventListener(
+            searchTuitionBtn?.removeEventListener(
                 "click",
                 handleSearch
             );
 
 
-            payBtn.removeEventListener(
+            payBtn?.removeEventListener(
                 "click",
                 handlePay
             );
 
 
-            closeModal.removeEventListener(
+            closeModal?.removeEventListener(
                 "click",
                 closePaymentModal
             );
 
 
-            cancelPayment.removeEventListener(
+            cancelPayment?.removeEventListener(
                 "click",
                 closePaymentModal
             );
 
 
-            paymentModal.removeEventListener(
+            paymentModal?.removeEventListener(
                 "click",
                 handleModalOutside
             );
 
 
-            confirmPayment.removeEventListener(
+            confirmPayment?.removeEventListener(
                 "click",
                 handleConfirmPayment
             );
 
 
-            mobileMenuBtn.removeEventListener(
+            mobileMenuBtn?.removeEventListener(
                 "click",
                 openSidebar
             );
 
 
-            sidebarOverlay.removeEventListener(
+            sidebarOverlay?.removeEventListener(
                 "click",
                 closeSidebar
             );
+            logoutBtn?.removeEventListener("click", handleLogout);
 
         };
 
 
-    }, []);
+    }, [onNavigate, onLogout]);
 
 
     return (
@@ -568,56 +503,40 @@ function Tuition() {
                     <a
                         href="#"
                         className="menu-item"
+                        onClick={(event) => { event.preventDefault(); onNavigate?.("home"); }}
                     >
-
                         <i className="bx bx-home-alt-2"></i>
-
-                        <span>
-                            Trang chủ
-                        </span>
-
+                        <span>Trang chủ</span>
                     </a>
 
 
                     <a
                         href="#"
                         className="menu-item active"
+                        onClick={(event) => { event.preventDefault(); onNavigate?.("tuition"); }}
                     >
-
                         <i className="bx bxs-graduation"></i>
-
-                        <span>
-                            Học phí
-                        </span>
-
+                        <span>Học phí</span>
                     </a>
 
 
                     <a
                         href="#"
                         className="menu-item"
+                        onClick={(event) => { event.preventDefault(); onNavigate?.("transaction"); }}
                     >
-
-                        <i className="bx bx-transfer-alt"></i>
-
-                        <span>
-                            Giao dịch
-                        </span>
-
+                        <i className="bx bx-user-circle"></i>
+                        <span>Tài khoản</span>
                     </a>
 
 
                     <a
                         href="#"
                         className="menu-item"
+                        onClick={(event) => { event.preventDefault(); onNavigate?.("transaction-history"); }}
                     >
-
                         <i className="bx bx-history"></i>
-
-                        <span>
-                            Lịch sử giao dịch
-                        </span>
-
+                        <span>Lịch sử giao dịch</span>
                     </a>
 
 
@@ -1145,7 +1064,7 @@ function Tuition() {
 
                                         <span id="totalAmount">
 
-                                            13,500,000
+                                            0
 
                                         </span>
 

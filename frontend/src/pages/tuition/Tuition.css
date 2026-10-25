@@ -1428,3 +1428,285 @@ input:checked
     }
 
 }
+
+/* =========================================================
+   UI BALANCE OVERRIDES
+   Align tuition page spacing and card proportions with the
+   Account and Transaction History pages. Keep existing markup.
+========================================================= */
+.page-content {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 28px;
+}
+
+.tuition-banner {
+    min-height: 158px;
+    padding: 24px 30px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+}
+
+.banner-content h1 {
+    font-size: 29px;
+    line-height: 1.25;
+}
+
+.banner-content h3 {
+    margin-bottom: 16px;
+    font-size: 15px;
+}
+
+.banner-image {
+    width: 300px;
+    height: 128px;
+    transform: scale(.9);
+    transform-origin: center right;
+}
+
+.filter-card,
+.tuition-card {
+    padding: 22px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(70, 30, 30, .04);
+}
+
+.section-title {
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.section-title h2,
+.tuition-card > h2 {
+    font-size: 17px;
+    line-height: 1.35;
+}
+
+.filter-grid {
+    gap: 16px;
+}
+
+.form-group select {
+    height: 44px;
+    border-radius: 9px;
+}
+
+.search-btn {
+    min-height: 44px;
+    border-radius: 9px;
+}
+
+.table-wrapper {
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+th,
+td {
+    padding: 13px 14px;
+}
+
+.payment-summary {
+    grid-template-columns: minmax(0, 1.4fr) minmax(210px, .8fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.total-card {
+    min-height: 82px;
+    padding: 16px 18px;
+    border-radius: 13px;
+}
+
+.total-card h2 {
+    font-size: 24px;
+    line-height: 1.25;
+}
+
+.pay-btn {
+    min-height: 48px;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1100px) {
+    .page-content {
+        padding: 24px;
+    }
+
+    .tuition-banner {
+        padding: 22px 24px;
+    }
+
+    .banner-image {
+        transform: scale(.78);
+    }
+
+    .payment-summary {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .page-content {
+        padding: 20px 16px;
+    }
+
+    .tuition-banner {
+        min-height: auto;
+        padding: 22px;
+        border-radius: 14px;
+    }
+
+    .banner-content h1 {
+        font-size: 25px;
+    }
+
+    .banner-image {
+        display: none;
+    }
+
+    .filter-card,
+    .tuition-card {
+        padding: 17px;
+        margin-bottom: 16px;
+        border-radius: 14px;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .search-btn {
+        grid-column: auto;
+        width: 100%;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 680px;
+    }
+
+    .total-card {
+        padding: 15px;
+    }
+}
+
+
+/* =====================================================
+   LAYOUT ALIGNMENT FIX — match account/history pages
+   Overrides only the tuition page layout; no JSX/business logic changes.
+===================================================== */
+
+.main-content {
+    width: calc(100% - var(--sidebar-width, 240px));
+    min-width: 0;
+    margin-left: var(--sidebar-width, 240px);
+    box-sizing: border-box;
+}
+
+.main-content > .page-content {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 28px 32px 36px;
+    box-sizing: border-box;
+}
+
+.main-content > .page-content > .tuition-banner,
+.main-content > .page-content > .filter-card,
+.main-content > .page-content > .tuition-card {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+}
+
+.main-content > .page-content > .tuition-banner {
+    min-height: 176px;
+    margin-bottom: 20px;
+    padding: 28px 32px;
+    border-radius: 18px;
+}
+
+.main-content > .page-content > .filter-card,
+.main-content > .page-content > .tuition-card {
+    padding: 22px;
+    margin-bottom: 20px;
+    border-radius: 18px;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(150px, 190px);
+    align-items: end;
+    gap: 16px;
+}
+
+.filter-grid > *,
+.form-group,
+.table-wrapper {
+    min-width: 0;
+}
+
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.table-wrapper table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.payment-summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(210px, 280px);
+    align-items: stretch;
+    gap: 18px;
+}
+
+.total-card,
+.payment-action {
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+    .main-content > .page-content { padding: 24px; }
+    .filter-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .search-btn { grid-column: 1 / -1; }
+    .payment-summary { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .main-content { width: 100%; margin-left: 0; }
+    .main-content > .page-content { padding: 20px 16px 28px; }
+    .main-content > .page-content > .tuition-banner { min-height: 150px; padding: 22px; }
+    .main-content > .page-content > .filter-card,
+    .main-content > .page-content > .tuition-card { padding: 18px; }
+}
+
+@media (max-width: 500px) {
+    .main-content > .page-content { padding: 16px 12px 24px; }
+    .filter-grid { grid-template-columns: minmax(0, 1fr); }
+    .search-btn { grid-column: auto; width: 100%; }
+    .payment-summary { grid-template-columns: minmax(0, 1fr); }
+}

@@ -1,1389 +1,185 @@
-/* =====================================================
-   RESET
-===================================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.transaction-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px;
+  box-sizing: border-box;
+  color: #292323;
 }
 
-
-:root {
-
-    --primary: #a8302f;
-    --primary-dark: #8f2424;
-    --primary-hover: #c94a47;
-
-    --primary-light: #fff0ef;
-
-    --background: #f8f5f5;
-
-    --white: #ffffff;
-
-    --text: #292323;
-
-    --text-soft: #7e7070;
-
-    --border: #eadada;
-
-    --sidebar-width: 240px;
-
-}
-
-
-body {
-
-    min-height: 100vh;
-
-    font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: var(--background);
-
-    color: var(--text);
-
-}
-
-
-button,
-input,
-select {
-
-    font-family: inherit;
-
-}
-
-
-button {
-
-    cursor: pointer;
-
-}
-
-
-
-/* =====================================================
-   APP
-===================================================== */
-
-.app {
-
-    min-height: 100vh;
-
-}
-
-
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-.sidebar {
-
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: var(--sidebar-width);
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-
-    padding: 22px 16px;
-
-    background: var(--white);
-
-    border-right: 1px solid var(--border);
-
-    z-index: 1000;
-
-}
-
-
-
-/* BRAND */
-
-.brand {
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 0 8px 22px;
-
-}
-
-
-.brand-icon {
-
-    width: 42px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: var(--primary);
-
-    color: white;
-
-    font-size: 23px;
-
-}
-
-
-.brand h2 {
-
-    font-size: 20px;
-
-    color: var(--primary);
-
-}
-
-
-
-/* USER */
-
-.user-card {
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 12px;
-
-    margin-bottom: 20px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 12px;
-
-    background: #fffafa;
-
-}
-
-
-.avatar {
-
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background: var(--primary-light);
-
-    color: var(--primary);
-
-    font-size: 20px;
-
-}
-
-
-.user-info {
-
-    min-width: 0;
-
-}
-
-
-.user-info h3 {
-
-    font-size: 13px;
-
-    margin-bottom: 3px;
-
-}
-
-
-.user-info p {
-
-    font-size: 10px;
-
-    color: var(--text-soft);
-
-}
-
-
-
-/* MENU */
-
-.menu {
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 6px;
-
-}
-
-
-.menu-item {
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 11px 12px;
-
-    text-decoration: none;
-
-    color: var(--text-soft);
-
-    border-radius: 10px;
-
-    font-size: 13px;
-
-    transition: 0.2s;
-
-}
-
-
-.menu-item i {
-
-    width: 22px;
-
-    font-size: 19px;
-
-}
-
-
-.menu-item:hover {
-
-    background: var(--primary-light);
-
-    color: var(--primary);
-
-}
-
-
-.menu-item.active {
-
-    background: var(--primary);
-
-    color: white;
-
-}
-
-
-
-/* LOGOUT */
-
-.logout-btn {
-
-    margin-top: auto;
-
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 11px 12px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: transparent;
-
-    color: var(--text-soft);
-
-    font-size: 13px;
-
-}
-
-
-.logout-btn i {
-
-    font-size: 19px;
-
-}
-
-
-.logout-btn:hover {
-
-    background: var(--primary-light);
-
-    color: var(--primary);
-
-}
-
-
-
-/* =====================================================
-   MAIN CONTENT
-===================================================== */
-
-.main-content {
-
-    min-height: 100vh;
-
-    margin-left: var(--sidebar-width);
-
-}
-
-
-
-/* =====================================================
-   MOBILE TOPBAR
-===================================================== */
-
-.mobile-topbar {
-
-    display: none;
-
-}
-
-
-
-/* =====================================================
-   PAGE
-===================================================== */
-
-.page {
-
-    width: 100%;
-
-    max-width: 1250px;
-
-    margin: 0 auto;
-
-    padding: 28px;
-
-}
-
-
-
-/* =====================================================
-   BALANCE
-===================================================== */
-
-.balance-card {
-
-    padding: 20px 22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #a8302f,
-            #c34b48
-        );
-
-    border-radius: 18px;
-
-    color: white;
-
-    box-shadow:
-        0 10px 30px
-        rgba(110, 35, 35, 0.16);
-
-}
-
-
-.balance-left {
-
-    display: flex;
-    align-items: center;
-
-    gap: 16px;
-
-}
-
-
-.wallet-icon {
-
-    width: 54px;
-    height: 54px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 14px;
-
-    background:
-        rgba(255, 255, 255, 0.16);
-
-    font-size: 26px;
-
-}
-
-
-.balance-title-row {
-
-    display: flex;
-    align-items: center;
-
-    gap: 5px;
-
-    margin-bottom: 5px;
-
-}
-
-
-.balance-title-row span {
-
-    font-size: 10px;
-
-    letter-spacing: 0.8px;
-
-    opacity: 0.85;
-
-}
-
-
-.eye-btn {
-
-    width: 22px;
-    height: 22px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border: none;
-
-    background: transparent;
-
-    color: white;
-
-    font-size: 17px;
-
-}
-
-
-.balance-info h2 {
-
-    margin-bottom: 5px;
-
-    font-size: 28px;
-
-}
-
-
-.balance-info h2 small {
-
-    font-size: 12px;
-
-    font-weight: 500;
-
-}
-
-
-.balance-info p {
-
-    font-size: 11px;
-
-    opacity: 0.85;
-
-}
-
-
-
-/* =====================================================
-   ACTION
-===================================================== */
-
-.action-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 16px;
-
-    margin-top: 20px;
-}
-
-
-/* =========================
-   ACTION CARD
-========================= */
-
-.action-card {
-
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-
-    padding: 16px;
-
-    text-align: left;
-
-    border: 1px solid var(--border);
-
-    border-radius: 14px;
-
-    background: var(--white);
-
-    color: var(--text);
-
-    transition: 0.2s;
-}
-
-
-.action-card:hover {
-
-    transform: translateY(-1px);
-
-    border-color: #dcbcbc;
-}
-
-
-/* =========================
-   ICON MẶC ĐỊNH
-   CHƯA CHỌN = XÁM
-========================= */
-
-.action-icon {
-
-    width: 42px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 12px;
-
-    background: #f1ecec;
-
-    color: var(--text-soft);
-
-    font-size: 23px;
-}
-
-
-/* =========================
-   NÚT ĐANG ĐƯỢC CHỌN
-========================= */
-
-.action-card.active-action {
-
-    background: var(--white);
-
-    border-color: var(--border);
-}
-
-
-/* CHỈ ICON CỦA NÚT ACTIVE MỚI ĐỎ */
-
-.action-card.active-action .action-icon {
-
-    background: var(--primary);
-
-    color: white;
-}
-
-
-/* =========================
-   TEXT
-========================= */
-
-.action-card strong {
-
-    display: block;
-
-    margin-bottom: 4px;
-
-    font-size: 13px;
-}
-
-
-.action-card span {
-
-    display: block;
-
-    font-size: 10px;
-
-    color: var(--text-soft);
-}
-
-
-/* =====================================================
-   TRANSACTION LAYOUT
-===================================================== */
-
-.transaction-layout {
-
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1.5fr)
-        minmax(280px, 0.8fr);
-
-    gap: 22px;
-
-    align-items: start;
-
-    margin-top: 20px;
-
-}
-
-
-
-/* =====================================================
-   FORM CARD
-===================================================== */
-
-.transaction-form-card {
-
-    padding: 22px;
-
-    background: var(--white);
-
-    border: 1px solid var(--border);
-
-    border-radius: 16px;
-
-    box-shadow:
-        0 8px 24px
-        rgba(60, 20, 20, 0.04);
-
-}
-
-
-.transaction-form-card h2 {
-
-    margin-bottom: 20px;
-
-    font-size: 17px;
-
-}
-
-
-
-/* FORM GROUP */
-
-.form-group {
-
-    margin-bottom: 16px;
-
-}
-
-
-.form-group label {
-
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 11px;
-
-    font-weight: 600;
-
-    color: #5f5252;
-
-}
-
-
-.form-group input,
-.form-group select {
-
-    width: 100%;
-
-    height: 44px;
-
-    padding: 0 12px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 9px;
-
-    outline: none;
-
-    background: white;
-
-    color: var(--text);
-
-    font-size: 12px;
-
-    transition: 0.2s;
-
-}
-
-
-.form-group input:focus,
-.form-group select:focus {
-
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(168, 48, 47, 0.08);
-
-}
-
-
-.form-group input[readonly] {
-
-    background: #faf7f7;
-
-    color: var(--text-soft);
-
-}
-
-
-
-/* MONEY INPUT */
-
-.money-input {
-
-    position: relative;
-
-}
-
-
-.money-input input {
-
-    padding-right: 55px;
-
-}
-
-
-.money-input span {
-
-    position: absolute;
-
-    top: 50%;
-    right: 13px;
-
-    transform: translateY(-50%);
-
-    color: var(--text-soft);
-
-    font-size: 11px;
-
-    font-weight: 600;
-
-}
-
-
-
-/* SUBMIT */
-
-.submit-btn {
-
-    width: 100%;
-
-    min-height: 44px;
-
-    padding: 11px 16px;
-
-    border: none;
-
-    border-radius: 9px;
-
-    background: var(--primary);
-
-    color: white;
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-    transition: 0.2s;
-
-}
-
-
-.submit-btn:hover {
-
-    background: var(--primary-dark);
-
-}
-
-
-
-/* =====================================================
-   RIGHT PANEL
-===================================================== */
-
-.right-panel {
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 18px;
-
-}
-
-
-
-/* NOTICE */
-
-.notice-card {
-
-    padding: 17px;
-
-    border: 1px solid #f0d3d3;
-
-    border-radius: 14px;
-
-    background: #fff8f7;
-
-}
-
-
-.notice-title {
-
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    margin-bottom: 10px;
-
-    color: var(--primary);
-
-    font-size: 12px;
-
-}
-
-
-.notice-title i {
-
-    font-size: 18px;
-
-}
-
-
-.notice-card ul {
-
-    padding-left: 18px;
-
-    color: var(--text-soft);
-
-    font-size: 10px;
-
-    line-height: 1.8;
-
-}
-
-
-
-/* =====================================================
-   BANK
-===================================================== */
-
-.bank-card {
-
-    padding: 17px;
-
-    background: var(--white);
-
-    border: 1px solid var(--border);
-
-    border-radius: 14px;
-
+.transaction-page__header {
+  margin-bottom: 24px;
 }
 
-
-.bank-header {
-
-    margin-bottom: 13px;
-
+.transaction-page__eyebrow,
+.transaction-section-label {
+  margin: 0 0 8px;
+  color: #8e2424;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
-
 
-.bank-header h3 {
-
-    font-size: 13px;
-
+.transaction-page__header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
 }
-
-
-.bank-grid {
 
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 9px;
-
+.transaction-page__header > p:last-child {
+  color: #766969;
+  margin-bottom: 0;
 }
-
-
-.bank-item {
-
-    min-height: 58px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
 
-    padding: 9px;
-
-    border: 1px solid #f0e5e5;
-
-    border-radius: 10px;
-
-    background: white;
-
+.transaction-account-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.8fr);
+  gap: 24px;
+  align-items: stretch;
 }
-
-
-.bank-logo {
-
-    width: 34px;
-    height: 34px;
-
-    object-fit: contain;
 
-    flex-shrink: 0;
-
-    padding: 2px;
-
-    background: white;
-
-    border-radius: 7px;
-
+.transaction-card {
+  min-width: 0;
+  padding: 28px;
+  border: 1px solid #eadede;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 22px rgb(50 20 20 / 5%);
 }
 
-
-.bank-item strong {
-
-    font-size: 10px;
-
+.transaction-bank-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  color: #fff;
+  background: linear-gradient(135deg, #7e1010, #d63838);
+  border: none;
 }
-
 
-
-/* =====================================================
-   HIDDEN
-===================================================== */
-
-.hidden {
-
-    display: none !important;
-
+.transaction-bank-card__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
 }
-
-
-
-/* =====================================================
-   OTP MODAL
-===================================================== */
-
-.modal-overlay {
 
-    position: fixed;
-
-    inset: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        rgba(25, 15, 15, 0.46);
-
-    z-index: 3000;
-
+.transaction-bank-card__logo {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 18%);
 }
-
-
-.otp-modal {
 
-    position: relative;
-
-    width: 100%;
-
-    max-width: 390px;
-
-    padding: 28px;
-
-    text-align: center;
-
-    background: white;
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 20px 60px
-        rgba(0, 0, 0, 0.2);
-
+.transaction-bank-card__label {
+  margin: 26px 0 8px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }
-
-
-.modal-close {
-
-    position: absolute;
-
-    top: 12px;
-    right: 12px;
-
-    width: 32px;
-    height: 32px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-
-    border-radius: 50%;
 
-    background: #f7eeee;
-
-    color: var(--text);
-
-    font-size: 21px;
-
+.transaction-bank-card h2 {
+  margin: 0;
+  font-size: 22px;
+  overflow-wrap: anywhere;
 }
-
-
-.otp-icon {
-
-    width: 54px;
-    height: 54px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 0 auto 13px;
 
-    border-radius: 50%;
-
-    background: var(--primary-light);
-
-    color: var(--primary);
-
-    font-size: 28px;
-
+.transaction-balance-card__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f1dddd;
 }
-
-
-.otp-modal h2 {
-
-    margin-bottom: 8px;
-
-    font-size: 19px;
 
+.transaction-balance-card__heading h2 {
+  margin: 8px 0 0;
+  font-size: clamp(22px, 3vw, 32px);
+  overflow-wrap: anywhere;
 }
 
-
-.otp-modal p {
-
-    margin-bottom: 12px;
-
-    color: var(--text-soft);
-
-    font-size: 11px;
-
-    line-height: 1.6;
-
+.transaction-visibility-button {
+  padding: 8px 12px;
+  border: 1px solid #e8baba;
+  border-radius: 8px;
+  background: #fff;
+  color: #922424;
+  cursor: pointer;
 }
-
-
-.otp-demo {
 
-    display: inline-block;
-
-    margin-bottom: 15px;
-
-    padding: 7px 10px;
-
-    border-radius: 7px;
-
-    background: #fff0ef;
-
-    color: var(--primary);
-
-    font-size: 10px;
-
+.transaction-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
 }
-
 
-.otp-input {
-
-    width: 100%;
-    height: 48px;
-
-    margin-bottom: 14px;
-
-    text-align: center;
-
-    letter-spacing: 7px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 9px;
-
-    outline: none;
-
-    font-size: 17px;
-
+.transaction-profile-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #f0dddd;
+  border-radius: 12px;
+  background: #fffafa;
 }
-
-
-.otp-input:focus {
-
-    border-color: var(--primary);
 
+.transaction-profile-item span {
+  color: #806c6c;
+  font-size: 12px;
 }
-
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-.toast {
 
-    position: fixed;
-
-    right: 25px;
-    bottom: 25px;
-
-    min-width: 250px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 13px 16px;
-
-    border-radius: 10px;
-
-    background: #292323;
-
-    color: white;
-
-    font-size: 11px;
-
-    box-shadow:
-        0 10px 35px
-        rgba(0, 0, 0, 0.18);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transform: translateY(15px);
-
-    transition: 0.3s;
-
-    z-index: 4000;
-
+.transaction-profile-item strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
 }
 
-
-.toast i {
-
-    font-size: 20px;
-
-    color: #67d591;
-
+.transaction-message {
+  padding: 16px;
+  border: 1px solid #eadede;
+  border-radius: 12px;
+  background: #fff;
 }
-
-
-.toast.show {
-
-    opacity: 1;
-
-    visibility: visible;
 
-    transform: translateY(0);
-
+.transaction-message--error {
+  color: #a51f1f;
 }
-
-
-
-/* =====================================================
-   SIDEBAR OVERLAY
-===================================================== */
 
-.sidebar-overlay {
-
-    display: none;
-
+.transaction-message button {
+  margin-left: 12px;
+  padding: 8px 12px;
+  border: 1px solid #d9aaaa;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
 }
-
-
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
 
 @media (max-width: 900px) {
+  .transaction-account-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .transaction-layout {
-
-        grid-template-columns: 1fr;
-
-    }
-
+  .transaction-bank-card {
+    min-height: 240px;
+  }
 }
-
-
-
-@media (max-width: 768px) {
-
-
-    .sidebar {
-
-        transform: translateX(-100%);
-
-        transition: 0.3s;
-
-    }
-
-
-    .sidebar.open {
-
-        transform: translateX(0);
-
-    }
-
-
-    .main-content {
-
-        margin-left: 0;
-
-    }
-
-
-    .mobile-topbar {
-
-        height: 58px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 16px;
-
-        background: white;
-
-        border-bottom: 1px solid var(--border);
-
-    }
-
-
-    .mobile-topbar button {
-
-        width: 36px;
-        height: 36px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border: none;
-
-        background: transparent;
-
-        color: var(--text);
-
-        font-size: 23px;
-
-    }
-
-
-    .sidebar-overlay {
-
-        position: fixed;
-
-        inset: 0;
-
-        display: block;
-
-        visibility: hidden;
-
-        opacity: 0;
-
-        background:
-            rgba(0, 0, 0, 0.35);
-
-        transition: 0.3s;
-
-        z-index: 999;
-
-    }
-
-
-    .sidebar-overlay.show {
-
-        visibility: visible;
-
-        opacity: 1;
-
-    }
-
-
-    .page {
-
-        padding: 18px;
-
-    }
-
-}
-
-
 
 @media (max-width: 600px) {
+  .transaction-page {
+    padding: 20px 16px;
+  }
 
+  .transaction-card {
+    padding: 20px;
+  }
 
-    .action-grid {
+  .transaction-profile-grid {
+    grid-template-columns: 1fr;
+  }
 
-        grid-template-columns: 1fr;
-
-    }
-
-
-    .bank-grid {
-
-        grid-template-columns: 1fr;
-
-    }
-
-
-    .balance-info h2 {
-
-        font-size: 23px;
-
-    }
-
-
-    .page {
-
-        padding: 14px;
-
-    }
-
+  .transaction-balance-card__heading {
+    flex-direction: column;
+  }
 }

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class LoginRequest(BaseModel):
@@ -15,9 +15,8 @@ class UserResponse(BaseModel):
     payer_id: int
     username: str
     fullname: str
-    phone: str
-    email: str 
-    #lấy từ AccountDB
+    phone: str | None = None
+    email: str | None = None
     balance: float
     status: str
     mssv: str | None = None

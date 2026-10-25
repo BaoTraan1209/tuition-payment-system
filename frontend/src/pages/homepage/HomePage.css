@@ -757,3 +757,55 @@ button { cursor: pointer; }
     .account-panel { padding: 16px; }
     .balance-area h2 { font-size: 27px; }
 }
+
+
+/* ===== HOMEPAGE WELCOME & QUICK ACTIONS ===== */
+.welcome-description {
+    max-width: 760px;
+    margin-top: 12px;
+    color: var(--soft);
+    font-size: 14px;
+    line-height: 1.7;
+}
+.home-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 28px 0 38px;
+}
+.home-action-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+    padding: 20px 18px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 8px 24px #461e1e08;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.home-action-card:hover {
+    border-color: #d7a3a1;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px #461e1e12;
+}
+.home-action-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: var(--light);
+    color: var(--primary);
+    font-size: 23px;
+}
+.home-action-copy { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.home-action-copy strong { font-size: 14px; }
+.home-action-copy small { color: var(--soft); font-size: 11px; line-height: 1.5; }
+.home-action-arrow { margin-left: auto; flex-shrink: 0; color: var(--primary); font-size: 20px; }
+@media (max-width: 1050px) { .home-quick-actions { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .home-quick-actions { gap: 12px; margin: 22px 0 30px; } .home-action-card { padding: 16px; } }

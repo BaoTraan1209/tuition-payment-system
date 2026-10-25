@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 from src.config.db import get_db
-from src.Schemas.auth_schema import LoginRequest, LoginResponse, UserResponse
+from src.schemas.auth_schema import LoginRequest, LoginResponse, UserResponse
 from src.Services.auth_service import login_user
 from src.Security.auth_dependency import get_current_user
 from src.Models.account import Account

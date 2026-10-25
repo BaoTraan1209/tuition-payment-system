@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 
-function StudentInfo() {
+function StudentInfo({ onNavigate }) {
 
     // =====================================================
     // STATE
@@ -138,9 +138,11 @@ function StudentInfo() {
     // =====================================================
 
     function handleBack() {
-
-        history.back();
-
+        if (typeof onNavigate === "function") {
+            onNavigate("home");
+        } else {
+            window.history.back();
+        }
     }
 
 
@@ -150,15 +152,13 @@ function StudentInfo() {
 
     function handleContinue() {
 
-        // Sau này đổi sang trang chi tiết học phí.
-        // Ví dụ khi có Router:
-        //
-        // navigate("/tuition/detail");
-
-
-        console.log(
-            "Chuyển sang bước 2: Chi tiết học phí"
-        );
+        // Lưu MSSV để các bước tiếp theo sử dụng.
+        sessionStorage.setItem("student_mssv", studentId.trim().toUpperCase());
+        if (typeof onNavigate === "function") {
+            onNavigate("tuition-detail");
+        } else {
+            console.warn("Thiếu onNavigate prop để chuyển trang.");
+        }
 
     }
 

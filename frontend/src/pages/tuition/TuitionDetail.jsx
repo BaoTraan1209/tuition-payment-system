@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 
-function TuitionDetail() {
+function TuitionDetail({ onNavigate }) {
 
 
     useEffect(() => {
@@ -137,9 +137,11 @@ function TuitionDetail() {
         // =====================================================
 
         function goBack() {
-
-            history.back();
-
+            if (typeof onNavigate === "function") {
+                onNavigate("student-info");
+            } else {
+                window.history.back();
+            }
         }
 
 
@@ -196,11 +198,17 @@ function TuitionDetail() {
             */
 
 
-            // Hiện tại test:
+            // Tạm thời lưu khoản học phí đầu tiên để bước xác nhận sử dụng.
+            // Cần thay ID demo này bằng tuition_id thật từ API khi response backend được xác nhận.
+            sessionStorage.setItem("selected_tuition_id", String(tuitionItems[0]?.id ?? ""));
+            sessionStorage.setItem("selected_tuition_amount", String(total));
+            sessionStorage.setItem("selected_tuition_name", String(tuitionItems[0]?.name ?? "Học phí"));
 
-            console.log(
-                "Chuyển sang bước 3: Xác nhận thanh toán"
-            );
+            if (typeof onNavigate === "function") {
+                onNavigate("payment-confirm");
+            } else {
+                console.warn("Thiếu onNavigate prop để chuyển trang.");
+            }
 
         }
 
@@ -299,7 +307,7 @@ function TuitionDetail() {
         };
 
 
-    }, []);
+    }, [onNavigate]);
 
 
 
