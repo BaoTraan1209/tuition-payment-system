@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.config.db import get_db
 from src.Security.auth_dependency import get_current_user
-from src.schemas.user_schema import UserProfileResponse, UserProfileUpdate
+from src.Schemas.user_schema import UserProfileResponse, UserProfileUpdate
 from src.Services.user_service import get_user_profile, edit_user_profile
 
 router = APIRouter(prefix="/users", tags=["Users"])
