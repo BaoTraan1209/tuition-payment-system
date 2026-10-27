@@ -1,1232 +1,154 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { formatTuitionStatus, formatVnd, getTuitionsByMssv } from "../services/tuitionService.js";
 import "./Tuition.css";
 
-
-function Tuition({ onNavigate, onLogout }) {
-
-
-    useEffect(() => {
-
-
-        // =============================================
-        // LẤY CÁC ELEMENT
-        // =============================================
-
-        const feeCheckboxes =
-            document.querySelectorAll(".fee-checkbox");
-
-        const totalAmount =
-            document.getElementById("totalAmount");
-
-        const payBtn =
-            document.getElementById("payBtn");
-
-        const paymentModal =
-            document.getElementById("paymentModal");
-
-        const modalAmount =
-            document.getElementById("modalAmount");
-
-        const closeModal =
-            document.getElementById("closeModal");
-
-        const cancelPayment =
-            document.getElementById("cancelPayment");
-
-        const confirmPayment =
-            document.getElementById("confirmPayment");
-
-        const searchTuitionBtn =
-            document.getElementById("searchTuitionBtn");
-
-        const schoolYear =
-            document.getElementById("schoolYear");
-
-        const semester =
-            document.getElementById("semester");
-
-        const logoutBtn = document.getElementById("logoutBtn");
-        const handleLogout = () => {
-            if (typeof onLogout === "function") onLogout();
-        };
-        logoutBtn?.addEventListener("click", handleLogout);
-
-
-        // =============================================
-        // FORMAT TIỀN
-        // =============================================
-
-        function formatMoney(amount) {
-
-            return new Intl.NumberFormat(
-                "vi-VN"
-            ).format(amount);
-
-        }
-
-
-        // =============================================
-        // TÍNH TỔNG HỌC PHÍ
-        // =============================================
-
-        function calculateTotal() {
-            let total = 0;
-
-            // Nếu giao diện có checkbox chọn khoản thu, ưu tiên tính các khoản được chọn.
-            if (feeCheckboxes.length > 0) {
-                feeCheckboxes.forEach((checkbox) => {
-                    if (checkbox.checked) {
-                        total += Number(checkbox.dataset.amount || 0);
-                    }
-                });
-            } else {
-                // Giao diện hiện tại chưa có checkbox. Tính tổng các khoản có trạng thái
-                // "Chưa thanh toán" để tổng tiền không bị 0 khi vẫn còn khoản chưa hoàn tất.
-                const tuitionRows = document.querySelectorAll(".tuition-card tbody tr");
-                tuitionRows.forEach((row) => {
-                    if (row.querySelector(".status.unpaid")) {
-                        const amountCell = row.querySelectorAll("td")[2];
-                        if (amountCell) {
-                            const amount = Number(amountCell.textContent.replace(/[^0-9]/g, ""));
-                            if (Number.isFinite(amount)) total += amount;
-                        }
-                    }
-                });
-            }
-
-            if (totalAmount) totalAmount.textContent = formatMoney(total);
-            if (payBtn) payBtn.disabled = total <= 0;
-            return total;
-        }
-
-
-        // =============================================
-        // CHECKBOX THAY ĐỔI
-        // =============================================
-
-        feeCheckboxes.forEach(
-            (checkbox) => {
-
-                checkbox.addEventListener(
-                    "change",
-                    calculateTotal
-                );
-
-            }
-        );
-
-
-        // =============================================
-        // TRA CỨU HỌC PHÍ
-        // =============================================
-
-        const handleSearch = () => {
-
-            const selectedYear =
-                schoolYear.value;
-
-            const selectedSemester =
-                semester.options[
-                    semester.selectedIndex
-                ].text;
-
-
-            console.log(
-                "Năm học:",
-                selectedYear
-            );
-
-            console.log(
-                "Học kỳ:",
-                selectedSemester
-            );
-
-
-            const originalContent =
-                searchTuitionBtn.innerHTML;
-
-
-            searchTuitionBtn.innerHTML =
-                `
-                <i class="bx bx-loader-alt bx-spin"></i>
-                Đang tra cứu...
-                `;
-
-
-            searchTuitionBtn.disabled =
-                true;
-
-
-            setTimeout(
-                () => {
-
-                    searchTuitionBtn.innerHTML =
-                        originalContent;
-
-                    searchTuitionBtn.disabled =
-                        false;
-
-                    alert(
-                        `Đã tra cứu học phí ${selectedSemester}, năm học ${selectedYear}`
-                    );
-
-                },
-                700
-            );
-
-        };
-
-
-        searchTuitionBtn?.addEventListener(
-            "click",
-            handleSearch
-        );
-
-
-        // =============================================
-        // MỞ MODAL THANH TOÁN
-        // =============================================
-
-        const handlePay = () => {
-
-            const total =
-                calculateTotal();
-
-
-            if (total <= 0) {
-
-                alert(
-                    "Vui lòng chọn ít nhất một khoản học phí."
-                );
-
-                return;
-
-            }
-
-
-            modalAmount.textContent =
-                `${formatMoney(total)} VND`;
-
-
-            paymentModal.classList.add(
-                "show"
-            );
-
-        };
-
-
-        payBtn?.addEventListener(
-            "click",
-            handlePay
-        );
-
-
-        // =============================================
-        // ĐÓNG MODAL
-        // =============================================
-
-        function closePaymentModal() {
-
-            paymentModal.classList.remove(
-                "show"
-            );
-
-        }
-
-
-        closeModal?.addEventListener(
-            "click",
-            closePaymentModal
-        );
-
-
-        cancelPayment?.addEventListener(
-            "click",
-            closePaymentModal
-        );
-
-
-        // Click bên ngoài modal
-
-        const handleModalOutside = (event) => {
-
-            if (
-                event.target ===
-                paymentModal
-            ) {
-
-                closePaymentModal();
-
-            }
-
-        };
-
-
-        paymentModal?.addEventListener(
-            "click",
-            handleModalOutside
-        );
-
-
-        // =============================================
-        // XÁC NHẬN THANH TOÁN
-        // =============================================
-
-        const handleConfirmPayment = () => {
-
-            const total =
-                calculateTotal();
-
-
-            confirmPayment.innerHTML =
-                `
-                <i class="bx bx-loader-alt bx-spin"></i>
-                Đang xử lý...
-                `;
-
-
-            confirmPayment.disabled =
-                true;
-
-
-            // Không giả lập thanh toán thành công ở Frontend.
-            // Chuyển sang luồng xác nhận/OTP để backend xử lý giao dịch thật.
-            sessionStorage.setItem("selected_tuition_amount", String(total));
-            // TODO: thay ID demo bằng tuition_id thực tế từ API.
-            if (!sessionStorage.getItem("selected_tuition_id")) {
-                sessionStorage.setItem("selected_tuition_id", "1");
-            }
-
-            closePaymentModal();
-            confirmPayment.textContent = "Xác nhận thanh toán";
-            confirmPayment.disabled = false;
-
-            if (typeof onNavigate === "function") {
-                onNavigate("payment-confirm");
-            } else {
-                alert("Không thể chuyển sang bước xác nhận thanh toán.");
-            }
-
-        };
-
-
-        confirmPayment?.addEventListener(
-            "click",
-            handleConfirmPayment
-        );
-
-
-        // =============================================
-        // MOBILE SIDEBAR
-        // =============================================
-
-        const sidebar =
-            document.getElementById("sidebar");
-
-        const sidebarOverlay =
-            document.getElementById(
-                "sidebarOverlay"
-            );
-
-        const mobileMenuBtn =
-            document.getElementById(
-                "mobileMenuBtn"
-            );
-
-
-        function openSidebar() {
-
-            sidebar.classList.add(
-                "open"
-            );
-
-            sidebarOverlay.classList.add(
-                "show"
-            );
-
-        }
-
-
-        function closeSidebar() {
-
-            sidebar.classList.remove(
-                "open"
-            );
-
-            sidebarOverlay.classList.remove(
-                "show"
-            );
-
-        }
-
-
-        mobileMenuBtn?.addEventListener(
-            "click",
-            openSidebar
-        );
-
-
-        sidebarOverlay?.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-
-        // =============================================
-        // KHỞI TẠO
-        // =============================================
-
-        calculateTotal();
-
-
-        // =============================================
-        // CLEANUP REACT
-        // =============================================
-
-        return () => {
-
-            feeCheckboxes.forEach(
-                (checkbox) => {
-
-                    checkbox.removeEventListener(
-                        "change",
-                        calculateTotal
-                    );
-
-                }
-            );
-
-
-            searchTuitionBtn?.removeEventListener(
-                "click",
-                handleSearch
-            );
-
-
-            payBtn?.removeEventListener(
-                "click",
-                handlePay
-            );
-
-
-            closeModal?.removeEventListener(
-                "click",
-                closePaymentModal
-            );
-
-
-            cancelPayment?.removeEventListener(
-                "click",
-                closePaymentModal
-            );
-
-
-            paymentModal?.removeEventListener(
-                "click",
-                handleModalOutside
-            );
-
-
-            confirmPayment?.removeEventListener(
-                "click",
-                handleConfirmPayment
-            );
-
-
-            mobileMenuBtn?.removeEventListener(
-                "click",
-                openSidebar
-            );
-
-
-            sidebarOverlay?.removeEventListener(
-                "click",
-                closeSidebar
-            );
-            logoutBtn?.removeEventListener("click", handleLogout);
-
-        };
-
-
-    }, [onNavigate, onLogout]);
-
-
-    return (
-
-        <div className="app">
-
-
-            {/* ======================================
-                 SIDEBAR
-            ======================================= */}
-
-            <aside
-                className="sidebar"
-                id="sidebar"
-            >
-
-
-                {/* BRAND */}
-
-                <div className="brand">
-
-
-                    <div className="brand-logo">
-
-                        <i className="bx bxs-bank"></i>
-
-                    </div>
-
-
-                    <div>
-
-                        <h2>
-                            TDTU
-                        </h2>
-
-                        <span>
-                            iBanking
-                        </span>
-
-                    </div>
-
-
-                </div>
-
-
-
-                {/* MENU */}
-
-                <nav className="menu">
-
-
-                    <a
-                        href="#"
-                        className="menu-item"
-                        onClick={(event) => { event.preventDefault(); onNavigate?.("home"); }}
-                    >
-                        <i className="bx bx-home-alt-2"></i>
-                        <span>Trang chủ</span>
-                    </a>
-
-
-                    <a
-                        href="#"
-                        className="menu-item active"
-                        onClick={(event) => { event.preventDefault(); onNavigate?.("tuition"); }}
-                    >
-                        <i className="bx bxs-graduation"></i>
-                        <span>Học phí</span>
-                    </a>
-
-
-                    <a
-                        href="#"
-                        className="menu-item"
-                        onClick={(event) => { event.preventDefault(); onNavigate?.("transaction"); }}
-                    >
-                        <i className="bx bx-user-circle"></i>
-                        <span>Tài khoản</span>
-                    </a>
-
-
-                    <a
-                        href="#"
-                        className="menu-item"
-                        onClick={(event) => { event.preventDefault(); onNavigate?.("transaction-history"); }}
-                    >
-                        <i className="bx bx-history"></i>
-                        <span>Lịch sử giao dịch</span>
-                    </a>
-
-
-                </nav>
-
-
-
-                {/* LOGOUT */}
-
-                <button
-                    className="logout-btn"
-                    id="logoutBtn"
-                    type="button"
-                >
-
-                    <i className="bx bx-log-out"></i>
-
-                    <span>
-                        Đăng xuất
-                    </span>
-
-                </button>
-
-
-            </aside>
-
-
-
-            {/* MOBILE OVERLAY */}
-
-            <div
-                className="sidebar-overlay"
-                id="sidebarOverlay"
-            ></div>
-
-
-
-            {/* ======================================
-                 MAIN CONTENT
-            ======================================= */}
-
-            <main className="main-content">
-
-
-                {/* TOPBAR */}
-
-                <header className="topbar">
-
-
-                    <button
-                        className="mobile-menu-btn"
-                        id="mobileMenuBtn"
-                        type="button"
-                    >
-
-                        <i className="bx bx-menu"></i>
-
-                    </button>
-
-
-                </header>
-
-
-
-                {/* PAGE */}
-
-                <div className="page-content">
-
-
-
-                    {/* ==================================
-                         BANNER
-                    =================================== */}
-
-                    <section className="tuition-banner">
-
-
-                        <div className="banner-content">
-
-
-                            <h1>
-                                Thanh toán học phí
-                            </h1>
-
-
-                            <h3>
-                                Nhanh chóng - An toàn - Tiện lợi
-                            </h3>
-
-
-                            <p>
-                                Đồng hành cùng bạn trên hành trình tri thức tại TDTU
-                            </p>
-
-
-                        </div>
-
-
-
-                        <div className="banner-image">
-
-
-                            <div className="book book-one"></div>
-
-                            <div className="book book-two"></div>
-
-
-                            <div className="graduation-cap">
-
-                                <i className="bx bxs-graduation"></i>
-
-                            </div>
-
-
-
-                            <div className="tuition-paper">
-
-
-                                <strong>
-                                    HỌC PHÍ
-                                </strong>
-
-
-                                <span></span>
-
-                                <span></span>
-
-                                <span></span>
-
-                                <span></span>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </section>
-
-
-
-                    {/* ==================================
-                         TUITION FILTER
-                    =================================== */}
-
-                    <section className="filter-card">
-
-
-                        <div className="section-title">
-
-
-                            <div className="title-icon">
-
-                                <i className="bx bxs-file-doc"></i>
-
-                            </div>
-
-
-                            <h2>
-                                Thông tin học phí
-                            </h2>
-
-
-                        </div>
-
-
-
-                        <div className="filter-grid">
-
-
-
-                            {/* SCHOOL YEAR */}
-
-                            <div className="form-group">
-
-
-                                <label>
-                                    Năm học
-                                </label>
-
-
-                                <select id="schoolYear">
-
-
-                                    <option value="2024-2025">
-
-                                        2024 - 2025
-
-                                    </option>
-
-
-                                    <option value="2025-2026">
-
-                                        2025 - 2026
-
-                                    </option>
-
-
-                                    <option value="2026-2027">
-
-                                        2026 - 2027
-
-                                    </option>
-
-
-                                </select>
-
-
-                            </div>
-
-
-
-                            {/* SEMESTER */}
-
-                            <div className="form-group">
-
-
-                                <label>
-                                    Học kỳ
-                                </label>
-
-
-                                <select
-                                    id="semester"
-                                    defaultValue="2"
-                                >
-
-
-                                    <option value="1">
-
-                                        Học kỳ 1
-
-                                    </option>
-
-
-                                    <option value="2">
-
-                                        Học kỳ 2
-
-                                    </option>
-
-
-                                    <option value="3">
-
-                                        Học kỳ hè
-
-                                    </option>
-
-
-                                </select>
-
-
-                            </div>
-
-
-
-                            {/* SEARCH BUTTON */}
-
-                            <button
-                                className="search-btn"
-                                id="searchTuitionBtn"
-                                type="button"
-                            >
-
-
-                                <i className="bx bx-search"></i>
-
-
-                                <span>
-                                    Tra cứu
-                                </span>
-
-
-                            </button>
-
-
-                        </div>
-
-
-                    </section>
-
-
-
-                    {/* ==================================
-                         TUITION LIST
-                    =================================== */}
-
-                    <section className="tuition-card">
-
-
-                        <h2>
-                            Danh sách khoản thu
-                        </h2>
-
-
-
-                        <div className="table-wrapper">
-
-
-                            <table>
-
-
-                                <thead>
-
-
-                                    <tr>
-
-                                        <th>
-                                            STT
-                                        </th>
-
-                                        <th>
-                                            Nội dung thu
-                                        </th>
-
-                                        <th>
-                                            Số tiền (VND)
-                                        </th>
-
-                                        <th>
-                                            Trạng thái
-                                        </th>
-
-                                    </tr>
-
-
-                                </thead>
-
-
-
-                                <tbody>
-
-
-
-                                    {/* ROW 1 */}
-
-                                    <tr>
-
-
-                                        <td>
-                                            1
-                                        </td>
-
-
-                                        <td className="fee-name">
-
-                                            Học phí học kỳ 2
-                                            (2024 - 2025)
-
-                                        </td>
-
-
-                                        <td>
-                                            12,500,000
-                                        </td>
-
-
-                                        <td>
-
-                                            <span className="status unpaid">
-
-                                                Chưa thanh toán
-
-                                            </span>
-
-                                        </td>
-
-
-                                    </tr>
-
-
-
-                                    {/* ROW 2 */}
-
-                                    <tr>
-
-
-                                        <td>
-                                            2
-                                        </td>
-
-
-                                        <td className="fee-name">
-
-                                            Phí cơ sở vật chất
-
-                                        </td>
-
-
-                                        <td>
-                                            1,000,000
-                                        </td>
-
-
-                                        <td>
-
-                                            <span className="status unpaid">
-
-                                                Chưa thanh toán
-
-                                            </span>
-
-                                        </td>
-
-
-                                    </tr>
-
-
-
-                                    {/* ROW 3 */}
-
-                                    <tr>
-
-
-                                        <td>
-                                            3
-                                        </td>
-
-
-                                        <td className="fee-name">
-
-                                            Bảo hiểm y tế (BHYT)
-
-                                        </td>
-
-
-                                        <td>
-                                            680,400
-                                        </td>
-
-
-                                        <td>
-
-                                            <span className="status paid">
-
-                                                Đã thanh toán
-
-                                            </span>
-
-                                        </td>
-
-
-                                    </tr>
-
-
-
-                                    {/* ROW 4 */}
-
-                                    <tr>
-
-
-                                        <td>
-                                            4
-                                        </td>
-
-
-                                        <td className="fee-name">
-
-                                            Phí đoàn - hội
-
-                                        </td>
-
-
-                                        <td>
-                                            200,000
-                                        </td>
-
-
-                                        <td>
-
-                                            <span className="status paid">
-
-                                                Đã thanh toán
-
-                                            </span>
-
-                                        </td>
-
-
-                                    </tr>
-
-
-                                </tbody>
-
-
-                            </table>
-
-
-                        </div>
-
-
-
-                        {/* ==================================
-                             PAYMENT SUMMARY
-                        =================================== */}
-
-                        <div className="payment-summary">
-
-
-
-                            {/* TOTAL */}
-
-                            <div className="total-card">
-
-
-                                <div className="total-icon">
-
-                                    <i className="bx bx-coin-stack"></i>
-
-                                </div>
-
-
-
-                                <div>
-
-
-                                    <span>
-                                        Tổng tiền cần thanh toán
-                                    </span>
-
-
-                                    <h2>
-
-
-                                        <span id="totalAmount">
-
-                                            0
-
-                                        </span>
-
-
-                                        <small>
-                                            VND
-                                        </small>
-
-
-                                    </h2>
-
-
-                                </div>
-
-
-                            </div>
-
-
-
-                            {/* PAY */}
-
-                            <div className="payment-action">
-
-
-                                <button
-                                    className="pay-btn"
-                                    id="payBtn"
-                                    type="button"
-                                >
-
-
-                                    <span>
-                                        Thanh toán ngay
-                                    </span>
-
-
-                                    <i className="bx bx-chevron-right"></i>
-
-
-                                </button>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </section>
-
-
-                </div>
-
-
-            </main>
-
-
-
-            {/* =============================================
-                 PAYMENT MODAL
-            ============================================== */}
-
-            <div
-                className="modal"
-                id="paymentModal"
-            >
-
-
-                <div className="modal-content">
-
-
-                    <button
-                        className="close-modal"
-                        id="closeModal"
-                        type="button"
-                    >
-
-
-                        <i className="bx bx-x"></i>
-
-
-                    </button>
-
-
-
-                    <div className="modal-icon">
-
-
-                        <i className="bx bx-wallet"></i>
-
-
-                    </div>
-
-
-
-                    <h2>
-
-                        Xác nhận thanh toán
-
-                    </h2>
-
-
-
-                    <p>
-
-                        Bạn đang thanh toán học phí với số tiền:
-
-                    </p>
-
-
-
-                    <strong
-                        className="modal-amount"
-                        id="modalAmount"
-                    >
-
-                        13,500,000 VND
-
-                    </strong>
-
-
-
-                    <div className="modal-buttons">
-
-
-                        <button
-                            className="cancel-btn"
-                            id="cancelPayment"
-                            type="button"
-                        >
-
-                            Hủy
-
-                        </button>
-
-
-
-                        <button
-                            className="confirm-btn"
-                            id="confirmPayment"
-                            type="button"
-                        >
-
-                            Xác nhận thanh toán
-
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
+// Frontend chỉ xem và chọn học phí; mọi việc tạo payment/trừ tiền do Payment Service thực hiện.
+export default function Tuition({ user, onSelectTuition, onNavigate }) {
+  const mssv = user?.mssv ?? user?.student?.mssv ?? user?.student_code ?? "";
+  const [tuitions, setTuitions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+  const [reload, setReload] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    setSelectedId(null);
+    if (!mssv) {
+      setTuitions([]);
+      setError("Tài khoản chưa có MSSV. Vui lòng kiểm tra thông tin sinh viên trong /auth/me.");
+      return () => { active = false; };
+    }
+
+    setLoading(true);
+    setError("");
+    getTuitionsByMssv(mssv)
+      .then((response) => {
+        if (!active) return;
+        const rows = Array.isArray(response) ? response : response?.data;
+        if (!Array.isArray(rows)) throw new Error("API học phí không trả về danh sách hợp lệ.");
+        setTuitions(rows);
+      })
+      .catch((err) => {
+        if (!active) return;
+        setTuitions([]);
+        setError(err?.response?.data?.detail || err?.message || "Không tải được danh sách học phí.");
+      })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [mssv, reload]);
+
+  const getId = useCallback((item) => item?.tuition_id ?? item?.tuitionId ?? item?.id, []);
+  const isUnpaid = (item) => String(item?.status ?? "").toUpperCase() === "UNPAID";
+
+  const selected = useMemo(
+    () => tuitions.find((item) => String(getId(item)) === String(selectedId) && isUnpaid(item)),
+    [tuitions, selectedId, getId]
+  );
+  const unpaidTotal = tuitions.reduce((sum, item) => sum + (isUnpaid(item) ? Number(item.amount || 0) : 0), 0);
+
+  function goToPayment() {
+    const tuitionId = selected && getId(selected);
+    if (!tuitionId || !Number.isFinite(Number(selected.amount)) || Number(selected.amount) <= 0) {
+      setError("Vui lòng chọn một khoản học phí chưa thanh toán có mã và số tiền hợp lệ.");
+      return;
+    }
+    if (typeof onSelectTuition !== "function" || typeof onNavigate !== "function") {
+      setError("Ứng dụng chưa cấu hình điều hướng thanh toán.");
+      return;
+    }
+    // PaymentConfirm lấy selectedTuition từ App.jsx, không dùng mã học phí giả trong sessionStorage.
+    onSelectTuition(selected);
+    onNavigate("payment-confirm");
+  }
+
+  return (
+    <div className="page-content">
+      <section className="tuition-banner">
+        <div className="banner-content">
+          <h1>Thanh toán học phí</h1>
+          <h3>Nhanh chóng - An toàn - Tiện lợi</h3>
+          <p>Tra cứu và thanh toán học phí trực tuyến</p>
         </div>
+        <div className="banner-image" aria-hidden="true">
+          <div className="book book-one" />
+          <div className="book book-two" />
+          <div className="graduation-cap"><i className="bx bxs-graduation" /></div>
+          <div className="tuition-paper"><strong>HỌC PHÍ</strong><span /><span /><span /><span /></div>
+        </div>
+      </section>
 
-    );
+      <section className="filter-card">
+        <div className="section-title">
+          <div className="title-icon"><i className="bx bxs-file-doc" /></div>
+          <h2>Thông tin học phí</h2>
+        </div>
+        <div className="filter-grid">
+          <div className="form-group"><label>Mã số sinh viên</label><p>{mssv || "Chưa liên kết"}</p></div>
+          <div className="form-group"><label>Họ và tên</label><p>{user?.fullname ?? user?.full_name ?? user?.name ?? "—"}</p></div>
+          <button className="search-btn" type="button" onClick={() => setReload((x) => x + 1)} disabled={loading || !mssv}>
+            <i className="bx bx-refresh" /> {loading ? "Đang tải..." : "Tải lại học phí"}
+          </button>
+        </div>
+        <p style={{ marginTop: 12, opacity: 0.75 }}>
+          Dữ liệu được lấy từ Tuition Service. Chưa lọc theo năm học/học kỳ vì API hiện chưa trả các trường này.
+        </p>
+      </section>
 
+      <section className="tuition-card">
+        <h2>Danh sách khoản thu</h2>
+        {error && <p role="alert" style={{ color: "#b42318", padding: 12 }}>{String(error)}</p>}
+        {loading && <p role="status" style={{ padding: 12 }}>Đang tải dữ liệu học phí...</p>}
+        {!loading && !error && tuitions.length === 0 && <p style={{ padding: 12 }}>Chưa có khoản học phí nào.</p>}
+        {!loading && tuitions.length > 0 && (
+          <div className="table-wrapper">
+            <table>
+              <thead><tr><th>Chọn</th><th>Mã học phí</th><th>Nội dung thu</th><th>Số tiền (VND)</th><th>Trạng thái</th></tr></thead>
+              <tbody>
+                {tuitions.map((item, index) => {
+                  const id = getId(item);
+                  const unpaid = isUnpaid(item);
+                  return (
+                    <tr key={id ?? `tuition-${index}`}>
+                      <td>
+                        <input
+                          type="radio"
+                          name="selected-tuition"
+                          aria-label={`Chọn khoản học phí ${id ?? index + 1}`}
+                          disabled={!unpaid || id == null || !(Number(item.amount) > 0)}
+                          checked={selectedId != null && id != null && String(selectedId) === String(id)}
+                          onChange={() => setSelectedId(id)}
+                        />
+                      </td>
+                      <td>{id ?? "—"}</td>
+                      <td className="fee-name">{item.name ?? item.title ?? item.description ?? `Học phí #${id ?? index + 1}`}</td>
+                      <td>{formatVnd(item.amount)}</td>
+                      <td><span className={`status ${unpaid ? "unpaid" : "paid"}`}>{formatTuitionStatus(item.status)}</span></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <div className="payment-summary">
+          <div className="total-card">
+            <div className="total-icon"><i className="bx bx-coin-stack" /></div>
+            <div>
+              <span>Tổng học phí chưa thanh toán</span>
+              <h2>{formatVnd(unpaidTotal)}</h2>
+              <small>Khoản đang chọn: {selected ? formatVnd(selected.amount) : "Chưa chọn"}</small>
+            </div>
+          </div>
+          <div className="payment-action">
+            <button className="pay-btn" type="button" disabled={loading || !selected} onClick={goToPayment}>
+              <span>Tiếp tục thanh toán khoản đã chọn</span>
+              <i className="bx bx-chevron-right" />
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
-
-
-export default Tuition;
